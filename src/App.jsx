@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from './layouts/Layout';
 import Login from "./pages/user/Login";
 import UserMain from "./pages/user/UserMain";
+import Join from "./pages/user/Join";
 
 function App() {
 
@@ -15,7 +16,8 @@ function App() {
           </Route>
 
 
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} /> {/* 로그인 */}
+        <Route path="/Join" element={<Join />} /> {/* 회원가입 */}
         </Routes>
       </BrowserRouter>
     </>
