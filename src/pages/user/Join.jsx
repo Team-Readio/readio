@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import JoinCSS from './Join.module.css';
 
+
+// test중중
 function Join() {
 
     // 약관 동의 상태 관리 _토글 기능
