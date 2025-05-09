@@ -12,7 +12,7 @@ function JoinComplete() {
                 <div className={styles.checkWrapper}>
                     <img src={checkIcon} alt="success" className={styles.checkimg} />
                 </div>
-                <h2 className={styles.title}>회원가입 완료</h2>
+                <h2 className={styles.title}>회원가입 완료 테스트~</h2>
                 <p className={styles.message}>
                     회원가입 내역 확인 및 수정은&nbsp;
                     <img src={menuIcon} alt="메뉴" className={styles.inlineIcon} />
