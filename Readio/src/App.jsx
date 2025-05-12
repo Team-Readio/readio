@@ -24,14 +24,16 @@ function App() {
             <Route path="/join" element={<Join />} /> {/* 회원가입 */}
             <Route path="/join/complete" element={<JoinComplete />} /> {/* 회원가입 완료 */}
 
-          <Route path="/find-account" element={<FindAccount />}>  
-            <Route index element={<Navigate to="find-id" replace />} />   {/* 기본 페이지-아이디찾기 */}
-            <Route path="find-id" element={<FindIdForm />} />             {/* 아이디 찾기 */}
-            <Route path="find-pwd" element={<FindPwdForm />} />           {/* 비밀번호 찾기 */}
+            <Route path="/find-account" element={<FindAccount />}>
+              <Route index element={<Navigate to="find-id" replace />} />   {/* 기본 페이지-아이디찾기 */}
+              <Route path="find-id" element={<FindIdForm />} />             {/* 아이디 찾기 */}
+              <Route path="find-pwd" element={<FindPwdForm />} />           {/* 비밀번호 찾기 */}
+              <Route path="account/suspended" element={<AccountSuspended />} />
+
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter >
+        </Routes>
+      </BrowserRouter >
     </>
   );
 }
