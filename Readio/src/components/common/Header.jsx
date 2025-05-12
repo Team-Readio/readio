@@ -10,7 +10,7 @@ import HeaderCSS from './Header.module.css';
 function Header({toggleNav}) {
     const navigate = useNavigate();
 
-    const dispatch = useDispatch
+    const dispatch = useDispatch;
     // const loginMember = useEslector((state) => state.memberReducer);
     const isLogin = window.localStorage.getItem('accessToken');
     const [search, setSearch] = useState('');
