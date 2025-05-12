@@ -28,8 +28,7 @@ function App() {
               <Route index element={<Navigate to="find-id" replace />} />   {/* 기본 페이지-아이디찾기 */}
               <Route path="find-id" element={<FindIdForm />} />             {/* 아이디 찾기 */}
               <Route path="find-pwd" element={<FindPwdForm />} />           {/* 비밀번호 찾기 */}
-              <Route path="account/suspended" element={<AccountSuspended />} />
-
+              <Route path="account/suspended" element={<AccountSuspended />} />   {/* 계정정지 안내 */}
             </Route>
           </Route>
         </Routes>

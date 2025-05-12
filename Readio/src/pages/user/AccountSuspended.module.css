@@ -10,6 +10,7 @@
     box-sizing: border-box;
 }
 
+
 .suspendedImg {
     width: 150px;
     height: auto;
@@ -23,12 +24,6 @@
     margin-bottom: 30px;
 }
 
-.warningSubtitle {
-    font-size: 23px;
-    color: #020202;
-    margin-bottom: 24px;
-}
-
 .content {
     background-color: #f0f0f0;
     border: 1px solid #ccc;
@@ -40,6 +35,6 @@
 
 .textBox {
     font-size: 16px;
-    color: #555555;
+    color: #0a0a0a;
     line-height: 1.6;
 }
