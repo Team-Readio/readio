@@ -14,7 +14,7 @@ function App() {
             <Route index element={<UserMain />} />
 
             <Route path="post/writing" element={<PostWriting />} />
-            <Route path="account/suspended" element={<AccountSuspended/>}/>
+            <Route path="account/suspended" element={<AccountSuspended/>}/>   {/* 계정정지 안내 */}
           </Route>
         </Routes>
       </BrowserRouter>
