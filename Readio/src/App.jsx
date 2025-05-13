@@ -4,7 +4,7 @@ import PostWriting from "./pages/post/PostWriting";
 import SearchBookList from './pages/searchList/SearchBookList';
 import SearchVideoList from './pages/searchList/SearchVideoList';
 import UserMain from "./pages/user/UserMain";
-import VideoPage from "./pages/videoDetail/VideoPage";
+import PlayVideo from "./pages/videoDetail/PlayVideo";
 
 
 function App() {
@@ -18,15 +18,10 @@ function App() {
             <Route path="post/writing" element={<PostWriting/>}/>
             <Route path="/search/video" element={<SearchVideoList />} />
             <Route path="/search/book" element={<SearchBookList />} />
-            <Route path="/video" element={<VideoPage />} />
+            <Route path="/video" element={<PlayVideo />} />
           </Route>
 
-          {/* <Route path="/" element={<Layout/>}>
-            <Route path="/" element={<UserMain/>}>
-                <Route path="/search/video" element={<SearchVideoList />} />
-                <Route path="/search/book" element={<SearchBookList />} />
-            </Route>
-          </Route> */}
+        
 
         </Routes>
       </BrowserRouter>

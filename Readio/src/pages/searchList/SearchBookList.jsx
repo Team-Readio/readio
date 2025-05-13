@@ -17,7 +17,6 @@ function SearchBookList() {
                                            <button className={UserMainCSS.mainKeywordButton}>#키워드</button>
                                         </div>
                                    </div>
-                              {/* <img className={UserMainCSS.mainImg} src={bgimg} alt={"배경"}/> */}
                     </div>
 
 
