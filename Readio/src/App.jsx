@@ -23,15 +23,14 @@ function App() {
             <Route path="/login" element={<Login />} /> {/* 로그인 */}
             <Route path="/join" element={<Join />} /> {/* 회원가입 */}
             <Route path="/join/complete" element={<JoinComplete />} /> {/* 회원가입 완료 */}
-        <Route path="/find-account" element={<FindAccount />}>          
+        <Route path="/find-account" element={<FindAccount />}>
           <Route index element={<Navigate to="find-id" replace />} />
           <Route path="find-id" element={<FindIdForm />} />
           <Route path="find-pwd" element={<FindPwdForm />} />
           </Route>
-          
         </Route>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter >
     </>
   );
 }
