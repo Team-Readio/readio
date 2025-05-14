@@ -7,9 +7,8 @@ import navBar from '../../assets/NavBar.png';
 import searchIcon from '../../assets/search2.png';
 import HeaderCSS from './Header.module.css';
 
-function Header({toggleNav}) {
+function Header({toggleNav, toggleAlarm}) {
     const navigate = useNavigate();
-
     const dispatch = useDispatch
     // const loginMember = useEslector((state) => state.memberReducer);
     const isLogin = window.localStorage.getItem('accessToken');
@@ -20,6 +19,7 @@ function Header({toggleNav}) {
     // const [navOpen, setNavOpen] = useState(false);
 
     // const toggleNav = () => {
+
     //     setNavOpen(!navOpen);
     // }
 
@@ -73,21 +73,25 @@ function Header({toggleNav}) {
     function AfterLogin() {
         return (
             <div className={HeaderCSS.headerLogin}>
+                <button className={HeaderCSS.headerAlarm}>
+                    <img src={bell}/>
+                </button>
+                <button
+                    onClick={onClickLogoutHandler}
+                    className={HeaderCSS.headerLoginBt}>
+                    로그아웃
+                </button>
                 <button
                     onClick={onclickMypageHandler}
                     className={HeaderCSS.headerLoginBt}>
                     내 서재
                 </button>
-                <button
-                    onClick={onClickLogoutHandler}
-                    className={HeaderCSS.headerLoginBt}>
-                        로그아웃
-                </button>
+
             </div>
         );
     }
 
-    return(
+    return (
         <>
             {loginModal ? <loginModal setLoginModal={setLoginModal}/> : null}
             <div className={HeaderCSS.headerDiv}>
@@ -101,29 +105,32 @@ function Header({toggleNav}) {
                     <img src={logo}/>
                 </button>
                 <div className={HeaderCSS.rightButtons}>
-                <div className={HeaderCSS.headerSearchDiv}>
-                    <select className={HeaderCSS.headerSearchOption}>
-                        <option value={"video"} style={{background: 'rgb(77,84,67)'}}>영상</option>
-                        <option value={"book"} style={{background: 'rgb(77,84,67)'}}>도서</option>
-                    </select>
-                    <input
-                        type='text'
-                        placeholder='검색'
-                        value={search}
-                        onKeyUp={onEnterkeyHandler}
-                        onChange={onSearchChangeHandler}
-                        className={HeaderCSS.headerSearch}
-                    />
-                    <button className={HeaderCSS.buttonNone}><img src={searchIcon}/></button>
-                </div>
-                <button className={HeaderCSS.headerAlarm}>
-                    <img src={bell} />
-                </button>
-                {isLogin == null || isLogin === undefined ? (
-                    <BeforeLogin />
-                ) : (
-                    <AfterLogin />
-                )}
+                    <div className={HeaderCSS.headerSearchDiv}>
+                        <select className={HeaderCSS.headerSearchOption}>
+                            <option value={"video"} style={{background: 'rgb(77,84,67)'}}>영상</option>
+                            <option value={"book"} style={{background: 'rgb(77,84,67)'}}>도서</option>
+                        </select>
+                        <input
+                            type='text'
+                            placeholder='검색'
+                            value={search}
+                            onKeyUp={onEnterkeyHandler}
+                            onChange={onSearchChangeHandler}
+                            className={HeaderCSS.headerSearch}
+                        />
+                        <button className={HeaderCSS.buttonNone}><img src={searchIcon}/></button>
+
+                        <button type='button' className={HeaderCSS.headerAlarm} onClick={toggleAlarm}>
+                            <img src={bell}/> {/*테스트용*/}
+                        </button>
+
+                    </div>
+
+                    {isLogin == null || isLogin === undefined ? (
+                        <BeforeLogin/>
+                    ) : (
+                        <AfterLogin/>
+                    )}
                 </div>
             </div>
         </>
