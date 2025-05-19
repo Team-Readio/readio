@@ -25,11 +25,11 @@
      display:  flex;
 }
 
-.book {
-     width : 200px;
-     height : 200px;
-     background-color: #4f4f4f;
-     border-radius: 3px;
+.book img{
+     width : 150px;
+     height : 250px;
+     border-radius: 5px;
+     box-shadow: 1px 1px 1px 1px #b0b0b0;
 }
 
 .bookInfo {

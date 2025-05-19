@@ -21,7 +21,7 @@
 }
 
 .videoList {
-     padding : 20px;
+     padding : 200px;
 }
 
 .video {
@@ -41,8 +41,9 @@
 }
 
 .videoDate {
-      margin : 20px 0;
-      font-size : 13px;
+     margin : 20px 0;
+     font-size : 13px;
+     font-weight: 500;
 }
 
 .videoDetail {

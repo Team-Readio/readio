@@ -17,13 +17,13 @@ function SearchVideoList() {
                // fetch(sample).then(data => setVideoList(data.items));
                setVideoList(getVideosTest().items);
                console.log("test", videoList); 
-          }
-     )
+          }, []
+     );
      
      const navigate = useNavigate();
      
-     const onClickVideoPage = () => {
-          navigate(`/video`);
+     const onClickVideoPage = (videoId) => {
+          navigate(`/video/${videoId}`);
      }
 
      const onSearchClickHandler = () => {
@@ -54,14 +54,14 @@ function SearchVideoList() {
                     <hr className="SearchVideoListHr" />
                     <div className={styles.SearchVideoList}>
 
-                         <div className={styles.videoList} onClick={onClickVideoPage}>
+                         {/* <div className={styles.videoList} onClick={onClickVideoPage(video.id.videoId)}>
                               {videoList.map(video => (
                                    <>
                                         <div key={video.etag} className={styles.video}>
-                                             {/* 영상 미리보기 컴포넌트 */}
+                                             영상 미리보기 컴포넌트
                                              <Video video={video} />
                                              
-                                             {/* 영상 정보 */}
+                                             영상 정보
                                              <div className={styles.videoInfo}>
                                                   <div className={styles.videoTitle}>{video.snippet.title}</div>
                                                   <div className={styles.videoDate}>
@@ -72,12 +72,34 @@ function SearchVideoList() {
                                    </div>
                                    <hr className="videoListHr"/>
                               </>
+                              ))} */}
+
+                              {videoList.map(video => (
+                                        <div
+                                             key={video.etag}
+                                             className={styles.video}
+                                             onClick={() => onClickVideoPage(video.id.videoId)} 
+                                             >
+                                             {/* 영상 미리보기 컴포넌트 */}
+                                             <Video video={video} />
+
+                                             {/* 영상 정보 */}
+                                             <div className={styles.videoInfo}>
+                                                  <div className={styles.videoTitle}>{video.snippet.title}</div>
+                                                  <div className={styles.videoDate}>
+                                                  {video.snippet.publishedAt.slice(0, 10).replace(/-/g, '.')}
+                                                  </div>
+                                                  <div className={styles.videoDetail}>{video.snippet.description}</div>
+                                             </div>
+                                             <hr className="videoListHr" />
+                                        </div>
                               ))}
+
                          </div>
 
                     </div>
                     
-               </div>
+               {/* </div> */}
           </>
      )
 }
