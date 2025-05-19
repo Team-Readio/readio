@@ -10,10 +10,15 @@
      font-weight: 600;
 }
 
-/*hr {*/
-/*     width : 80vh;*/
-/*     height: 1px;*/
-/*}*/
+.SearchbookListhr {
+     width : 90vh;
+     height: 1px;
+}
+
+.bookListhr {
+     width : 85vh;
+     height: 1px;
+}
 
 .bookList {
      padding : 20px 40px;

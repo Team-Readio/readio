@@ -6,6 +6,26 @@ import styles from './SearchBookList.module.css';
 function SearchBookList() {
 
      const navigate = useNavigate();
+
+     // const [book, setBook] = useState([]);
+     // const [bookCover, setBookCover] = useState('');
+
+     // const [bookList, setBookList] = useState([]);
+     
+     // useEffect(() => {
+     //      testBook()
+     //      .then(data => {
+     //           setBook(data.item[0]);
+     //           console.log("book", book);
+     //           if (book && book.cover) {
+     //                setBookCover(book.cover.replace("coversum", "cover500"));
+     //           }});
+     // },[book.cover])
+
+
+
+
+
      
      // const [searchVideo, setSearchVideo] = useState('');
 
@@ -54,7 +74,7 @@ function SearchBookList() {
                    <div className={styles.container}>
 
                         <div className={styles.SearchListTitle}># 키워드에 대한 검색 결과</div>
-                        <hr />
+                        <hr className="SearchbookListHr" />
                         <div className={styles.SearchBookList}>
     
                              <div className={styles.bookList}>
@@ -71,7 +91,7 @@ function SearchBookList() {
                                                                         </div>
                                   </div>
                              </div>
-                             <hr />
+                             <hr className="bookListHr" />
 
 
                              <div className={styles.bookList}>
@@ -88,7 +108,7 @@ function SearchBookList() {
                                                                         </div>
                                   </div>
                              </div>
-                             <hr />
+                             <hr className="bookListHr" />
 
 
                              <div className={styles.bookList}>
@@ -108,7 +128,7 @@ function SearchBookList() {
     
      
                         </div>
-                        <hr />
+                        <hr className="bookListHr" />
                    </div>
               </>
          )

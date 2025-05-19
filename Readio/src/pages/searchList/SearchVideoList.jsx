@@ -1,11 +1,24 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getVideosTest } from '../../apis/VideoAPI';
 import search from '../../assets/search.png';
 import UserMainCSS from '../user/UserMain.module.css';
+import Video from './../../components/video/Video';
 import styles from './SearchVideoList.module.css';
 
 
 function SearchVideoList() {
 
+     const [videoList, setVideoList] = useState([]);
+
+     useEffect(
+          () => {
+               // getVideos.then(data => setVideoList(data));
+               // fetch(sample).then(data => setVideoList(data.items));
+               setVideoList(getVideosTest().items);
+               console.log("test", videoList); 
+          }
+     )
      
      const navigate = useNavigate();
      
@@ -35,54 +48,34 @@ function SearchVideoList() {
 
                </div>
 
-                    
-               <div className={styles.container}>
+              <div className={styles.container}>
 
                     <div className={styles.SearchListTitle}># 키워드에 대한 검색 결과</div>
-                    <hr />
+                    <hr className="SearchVideoListHr" />
                     <div className={styles.SearchVideoList}>
 
                          <div className={styles.videoList} onClick={onClickVideoPage}>
-                              <div className={styles.video}></div>
-                              <div className={styles.videoInfo}>
-                                   <div className={styles.videoTitle}>[이적의 단어들]📜 작가 이적. 책리뷰. 추천도서...</div>
-                                   <div className={styles.videoDate}>2023.08.05</div>
-                                   <div className={styles.videoDetail}>이적의 단어들 📚 은 싱어송라이터 이적이 시의 형식으로 쓴 에세이입니다. 짧게 단편으로 ...</div>
-                              </div>
-                         </div>
-                         <hr />
-
-                         <div className={styles.videoList} onClick={onClickVideoPage}>
-                              <div className={styles.video}></div>
-                              <div className={styles.videoInfo}>
-                                   <div className={styles.videoTitle}>[이적의 단어들]📜 작가 이적. 책리뷰. 추천도서...</div>
-                                   <div className={styles.videoDate}>2023.08.05</div>
-                                   <div className={styles.videoDetail}>이적의 단어들 📚 은 싱어송라이터 이적이 시의 형식으로 쓴 에세이입니다. 짧게 단편으로 ...</div>
-                              </div>
-                         </div>
-                         <hr />
-
-                         <div className={styles.videoList} onClick={onClickVideoPage}>
-                              <div className={styles.video}></div>
-                              <div className={styles.videoInfo}>
-                                   <div className={styles.videoTitle}>[이적의 단어들]📜 작가 이적. 책리뷰. 추천도서...</div>
-                                   <div className={styles.videoDate}>2023.08.05</div>
-                                   <div className={styles.videoDetail}>이적의 단어들 📚 은 싱어송라이터 이적이 시의 형식으로 쓴 에세이입니다. 짧게 단편으로 ...</div>
-                              </div>
-                         </div>
-                         <hr />
-
-                         <div className={styles.videoList} onClick={onClickVideoPage}>
-                              <div className={styles.video}></div>
-                              <div className={styles.videoInfo}>
-                                   <div className={styles.videoTitle}>[이적의 단어들]📜 작가 이적. 책리뷰. 추천도서...</div>
-                                   <div className={styles.videoDate}>2023.08.05</div>
-                                   <div className={styles.videoDetail}>이적의 단어들 📚 은 싱어송라이터 이적이 시의 형식으로 쓴 에세이입니다. 짧게 단편으로 ...</div>
-                              </div>
+                              {videoList.map(video => (
+                                   <>
+                                        <div key={video.etag} className={styles.video}>
+                                             {/* 영상 미리보기 컴포넌트 */}
+                                             <Video video={video} />
+                                             
+                                             {/* 영상 정보 */}
+                                             <div className={styles.videoInfo}>
+                                                  <div className={styles.videoTitle}>{video.snippet.title}</div>
+                                                  <div className={styles.videoDate}>
+                                                       {video.snippet.publishedAt.slice(0, 10).replace(/-/g, '.')}
+                                                  </div>
+                                                  <div className={styles.videoDetail}>{video.snippet.description}</div>
+                                        </div>
+                                   </div>
+                                   <hr className="videoListHr"/>
+                              </>
+                              ))}
                          </div>
 
                     </div>
-                    <hr />
                     
                </div>
           </>
