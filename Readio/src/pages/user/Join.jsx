@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './Join.module.css';
 
 function Join() {
@@ -14,6 +14,161 @@ function Join() {
         userPhone: '',
         userBirthday: ''
     });
+
+    const [errors, setErrors] = useState({
+        userName: '',
+        userId: '',
+        userPwd: '',
+        userPwdCheck: '',
+        userEmail: '',
+        userPhone: '',
+        userBirthday: ''
+    });
+
+    // 초기값 세팅
+    // const [userId, setUserId] = React.useState("");
+    // const [userName, setUserName] = React.useState("");
+    // const [userPwd, setUserPwd] = React.useState("");
+    // const [userPwdConfirm, setUserPwdConfirm] = React.useState("");
+    // const [userEmail, setUserEmail] = React.useState("");
+    // const [userPhone, setUserPhone] = React.useState("");
+    // const [userBirthday, setUserBirthday] = React.useState("");
+
+    // 오류 메시지 
+    const [idMessage, setIdMessage] = React.useState("");
+    const [nameMessage, setNameMessage] = React.useState("");
+    const [pwdMessage, setPwdMessage] = React.useState("");
+    const [pwdConfirmMessage, setPwdConfirmMessage] = React.useState("");
+    const [emailMessage, setEmailMessage] = React.useState("");
+    const [phoneMessage, setPhoneMessage] = React.useState("");
+    const [birthdayMessage, setBirthdayMessage] = React.useState("");
+
+    const [isId, setIsId] = React.useState(false);
+    const [isName, setIsName] = React.useState(false);
+    const [isPwd, setIsPwd] = React.useState(false);
+    const [isPwdConfirm, setIsPwdConfirm] = React.useState(false);
+    const [isEmail, setIsEmail] = React.useState(false);
+    const [isPhone, setIsPhone] = React.useState(false);
+    const [isBirthday, setIsBirthday] = React.useState(false);
+
+    // 이름 유효성 검사
+    const onChangeName = (e) => {
+        const value = e.target.value;
+        setForm((prev) => ({ ...prev, userName: value }));
+
+        const nameRegExp = /^[가-힣a-zA-Z]{2,30}$/;
+        if (!nameRegExp.test(value)) {
+            setNameMessage("한글은 6자 이내, 영문은 30자 이내로 입력해 주세요.");
+            setIsName(false);
+        } else {
+            setNameMessage("사용 가능한 이름입니다.");
+            setIsId(true);
+        };
+    }
+
+    // 아이디 유효성 검사
+    const onChangeId = (e) => {
+        const value = e.target.value;
+        setForm((prev) => ({ ...prev, userId: value }));
+
+        const idRegExp = /^[a-zA-Z0-9]{6,20}$/;
+        if (!idRegExp.test(value)) {
+            setIdMessage("6자리 이상의 영문 혹은, 영문,숫자를 조합하여 입력해 주세요.");
+            setIsId(false);
+        } else {
+            setIdMessage("사용 가능한 아이디입니다.");
+            setIsId(true);
+        };
+    }
+
+    // 비밀번호 유효성 검사
+    const onChangePwd = (e) => {
+        const value = e.target.value;
+        setForm((prev) => ({ ...prev, userPwd: value }));
+
+        const lengthValid = /^.{8,20}$/.test(value);
+        const hasLetter = /[a-zA-Z]/.test(value);
+        const hasNumber = /[0-9]/.test(value);
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
+        const typesCount = [hasLetter, hasNumber, hasSpecial].filter(Boolean).length;
+
+        if (!lengthValid || typesCount < 2) {
+            setPwdMessage("영문/숫자/특수문자 중 2가지 이상 조합(8~20자)");
+            setIsPwd(false);
+        } else {
+            setPwdMessage("사용 가능한 아이디입니다.");
+            setIsPwd(true);
+        };
+    }
+
+    // 비밀번호 확인란 유효성 검사 
+    const onChangePwdConfirm = (e) => {
+        const value = e.target.value;
+        setForm((prev) => ({ ...prev, userPwdCheck: value }));
+
+        if (!form.userPwd !== value) {
+            setPwdConfirmMessage("비밀번호가 일치하지 않습니다.");
+            setIsPwdConfirm(false)
+        } else {
+            setPwdConfirmMessage("비밀번호가 일치합니다.");
+            setIsPwdConfirm(true);
+        }
+    }
+
+    // 이메일 유효성 검사
+    const onChangeEmail = (e) => {
+        const value = e.target.value;
+        setForm((prev) => ({ ...prev, userEmail: value }));
+
+        const emailRegExp = /^[a-zA-Z0-9_]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
+        // @ 기준 앞 구간은 알파벳 또는 숫자 조합
+        // @ 기준 뒤 구간은 알파벳 또는 숫자 조합
+        // @은 반드시 1개만 존재
+        // @ 뒤에서 . 기준 뒤 구간도 알파벳 또는 숫자 조합   (\.이 .임)
+
+        if (!emailRegExp.test(value)) {
+            setEmailMessage("유효한 이메일 주소를 입력해 주세요.");
+            setIsEmail(false);
+        } else {
+            setEmailMessage("사용 가능한 이메일입니다.");
+            setIsEmail(true);
+        };
+    }
+
+    // 휴대폰번호 유효성 검사 
+    const onChangePhone = (e) => {
+        const value = e.target.value;
+        setForm((prev) => ({ ...prev, userPhone: value }));
+
+        const phoneRegExp = /^(01[016789]|02|0[3-9][0-9])-[0-9]{3,4}-[0-9]{4}$/;
+
+        if (!phoneRegExp !== value) {
+            setPhoneMessage("비밀번호가 일치하지 않습니다.");
+            setIsPhone(false)
+        } else {
+            setPhoneMessage("비밀번호가 일치합니다.");
+            setIsPhone(true);
+        }
+    }
+
+
+    // 생년월일 유효성 검사 
+    const onChangeBirthday = (e) => {
+        const value = e.target.value;
+        setForm((prev) => ({ ...prev, userPhone: value }));
+
+        const phoneRegExp = /^(01[016789]|02|0[3-9][0-9])-[0-9]{3,4}-[0-9]{4}$/;
+
+        if (!phoneRegExp !== value) {
+            setPhoneMessage("비밀번호가 일치하지 않습니다.");
+            setIsPhone(false)
+        } else {
+            setPhoneMessage("비밀번호가 일치합니다.");
+            setIsPhone(true);
+        }
+    }
+
 
     // 약관 동의 상태
     const [agreeTerms, setAgreeTerms] = useState(false);
@@ -85,34 +240,81 @@ function Join() {
 
                 <div className={styles.formGroup}>
                     <label>이름</label>
-                    <input name="userName" type="text" placeholder="이름을 입력하세요" onChange={handleChange} />
+                    <input
+                        name="userName"
+                        type="text"
+                        placeholder="이름을 입력하세요"
+                        value={form.userName}
+                        onChange={onChangeName} />
+                    <p className={styles.message}>{nameMessage}</p>
                 </div>
+
                 <div className={styles.formGroup}>
                     <label>아이디</label>
-                    <input name="userId" type="text" placeholder="아이디를 입력하세요" onChange={handleChange} />
+                    <input
+                        name="userId"
+                        type="text"
+                        placeholder="아이디를 입력하세요"
+                        value={form.userId}
+                        onChange={onChangeId} />
+                    <p className={styles.message}>{idMessage}</p>
                     <button type="button" className={styles.checkBtn}>중복확인</button>
                 </div>
+
                 <div className={styles.formGroup}>
                     <label>비밀번호</label>
-                    <input name="userPwd" type="password" placeholder="비밀번호 입력" onChange={handleChange} />
+                    <input
+                        name="userPwd"
+                        type="password"
+                        placeholder="비밀번호 입력"
+                        value={form.userPwd}
+                        onChange={onChangePwd} />
+                    <p className={styles.message}>{pwdMessage}</p>
                 </div>
+
                 <div className={styles.formGroup}>
                     <label>비밀번호 확인</label>
-                    <input name="userPwdCheck" type="password" placeholder="비밀번호 확인" onChange={handleChange} />
+                    <input
+                        name="userPwdCheck"
+                        type="password"
+                        placeholder="비밀번호 확인"
+                        value={form.userPwdCheck}
+                        onChange={onChangePwdConfirm} />
+                    <p className={styles.message}>{pwdConfirmMessage}</p>
                 </div>
+
                 <div className={styles.formGroup}>
                     <label>이메일</label>
-                    <input name="userEmail" type="email" placeholder="이메일을 입력하세요" onChange={handleChange} />
+                    <input
+                        name="userEmail"
+                        type="email"
+                        placeholder="이메일을 입력하세요"
+                        value={form.userEmail}
+                        onChange={onChangeEmail} />
+                    <p className={styles.message}>{emailMessage}</p>
                     <button type="button" className={styles.checkBtn}>중복확인</button>
                 </div>
+
                 <div className={styles.formGroup}>
                     <label>휴대폰 번호</label>
-                    <input name="userPhone" type="tel" placeholder="휴대폰 번호 입력" onChange={handleChange} />
+                    <input
+                        name="userPhone"
+                        type="tel"
+                        placeholder="휴대폰 번호 입력"
+                        value={form.userPhone}
+                        onChange={onChangePhone} />
+                    <p className={styles.message} >{phoneMessage}</p>
                     <button type="button" className={styles.checkBtn}>중복확인</button>
                 </div>
+
                 <div className={styles.formGroup}>
                     <label>생년월일</label>
-                    <input name="userBirthday" type="date" onChange={handleChange} />
+                    <input
+                        name="userBirthday"
+                        type="date"
+                        value={form.userBirthday}
+                        onChange={onChangeBirthday} />
+                    <p className={styles.message}>{birthdayMessage}</p>
                 </div>
             </section>
 
