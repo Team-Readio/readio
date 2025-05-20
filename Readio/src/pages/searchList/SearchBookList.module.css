@@ -16,13 +16,18 @@
 }
 
 .bookListhr {
-     width : 75vh;
+     width : 85vh;
      height: 1px;
 }
 
 .bookList {
-     padding : 20px 40px;
-     display:  flex;
+     padding : 10px 30px;
+     /* display:  flex; */
+}
+
+.bookItem {
+     display: flex;
+     margin: 30px;
 }
 
 .book img{

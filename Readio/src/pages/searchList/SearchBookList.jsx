@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { testBook } from '../../apis/BookAPI';
+import { testBooks } from '../../apis/BookAPI';
 import search from '../../assets/search.png';
 import UserMainCSS from '../user/UserMain.module.css';
 import styles from './SearchBookList.module.css';
@@ -13,33 +13,18 @@ function SearchBookList() {
      // const [bookCover, setBookCover] = useState('');
 
      const [bookList, setBookList] = useState([]);
-     
-     // useEffect(() => {
-     //      testBook()
-     //      .then(data => {
-     //           setBook(data.item[0]);
-     //           console.log("book", book);
-     //           if (book && book.cover) {
-     //                setBookCover(book.cover.replace("coversum", "cover500"));
-     //           }});
-     // },[book.cover])
 
      useEffect(() => {
-     testBook()
-          .then(data => {
-               setBookList(data.item); // 전체 리스트 저장
-          })
-          .catch(error => {
-               console.error("책 목록 불러오기 실패", error);
-          });
+          const data = testBooks();  // 동기 호출
+          console.log("로컬 테스트 JSON 결과:", data);
+
+          if (data && data.item) {
+               setBookList(data.item);  // 바로 상태에 반영
+          }
      }, []);
 
 
 
-
-
-
-     
      // const [searchVideo, setSearchVideo] = useState('');
 
      // 책 상세 페이지로 이동하게 하기 
@@ -110,33 +95,33 @@ function SearchBookList() {
 
                                    <div className={styles.bookList}>
                                         {bookList.map(book => (
-                                             <>
-                                                  <div className={styles.bookList} key={book.itemId}>
-                                                       <div className={styles.book}>
-                                                            <img
-                                                                 src={book.cover.replace("coversum", "cover500")}
-                                                                 alt={`${book.title} 표지` }
-                                                            />
-                                                       </div>
-                                                       <div className={styles.bookInfo}>
-                                                            <div className={styles.bookTitle}>{book.title}</div>
-                                                            <div className={styles.credits}>
-                                                            <div className={styles.bookAuthor}>{book.author}</div>
-                                                            <div className={styles.bookPublisher}>{book.publisher}</div>
-                                                            </div>
-                                                            <div className={styles.bookDetail}>{book.description}</div>
-                                                       </div>
+                                        <>
+                                             <div key={book.itemId} className={styles.bookItem}>
+                                                  <div className={styles.book}>
+                                                  <img
+                                                       src={book.cover.replace("coversum", "cover500")}
+                                                       alt={`${book.title} 표지`}
+                                                       />
                                                   </div>
-
-                                                  {/* <hr className={styles.bookListhr} /> */}
-                                             </>
+                                                  <div className={styles.bookInfo}>
+                                                  <div className={styles.bookTitle}>{book.title}</div>
+                                                  <div className={styles.credits}>
+                                                       <div className={styles.bookAuthor}>{book.author}</div>
+                                                       <div className={styles.bookPublisher}>{book.publisher}</div>
+                                                  </div>
+                                                  <div className={styles.bookDetail}>{book.description}</div>
+                                                  </div>
+                                             </div>
+                                             <hr className="bookListHr" />
+                                        </>
                                         ))}
                                    </div>
+
                                    
                             
 
 
-                             <hr className="bookListHr" />
+                             {/* <hr className="bookListHr" /> */}
     
      
                         </div>
