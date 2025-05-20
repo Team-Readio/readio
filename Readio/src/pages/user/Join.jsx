@@ -15,15 +15,15 @@ function Join() {
         userBirthday: ''
     });
 
-    const [errors, setErrors] = useState({
-        userName: '',
-        userId: '',
-        userPwd: '',
-        userPwdCheck: '',
-        userEmail: '',
-        userPhone: '',
-        userBirthday: ''
-    });
+    // const [errors, setErrors] = useState({
+    //     userName: '',
+    //     userId: '',
+    //     userPwd: '',
+    //     userPwdCheck: '',
+    //     userEmail: '',
+    //     userPhone: '',
+    //     userBirthday: ''
+    // });
 
     // 초기값 세팅
     // const [userId, setUserId] = React.useState("");
@@ -97,7 +97,7 @@ function Join() {
             setPwdMessage("영문/숫자/특수문자 중 2가지 이상 조합(8~20자)");
             setIsPwd(false);
         } else {
-            setPwdMessage("사용 가능한 아이디입니다.");
+            setPwdMessage("");
             setIsPwd(true);
         };
     }
@@ -107,7 +107,7 @@ function Join() {
         const value = e.target.value;
         setForm((prev) => ({ ...prev, userPwdCheck: value }));
 
-        if (!form.userPwd !== value) {
+        if (form.userPwd !== value) {
             setPwdConfirmMessage("비밀번호가 일치하지 않습니다.");
             setIsPwdConfirm(false)
         } else {
@@ -143,11 +143,11 @@ function Join() {
 
         const phoneRegExp = /^(01[016789]|02|0[3-9][0-9])-[0-9]{3,4}-[0-9]{4}$/;
 
-        if (!phoneRegExp !== value) {
-            setPhoneMessage("비밀번호가 일치하지 않습니다.");
+        if (!phoneRegExp.test(value)) {
+            setPhoneMessage("'-'를 포함하여 입력해 주세요.'");
             setIsPhone(false)
         } else {
-            setPhoneMessage("비밀번호가 일치합니다.");
+            setPhoneMessage("");
             setIsPhone(true);
         }
     }
@@ -156,17 +156,7 @@ function Join() {
     // 생년월일 유효성 검사 
     const onChangeBirthday = (e) => {
         const value = e.target.value;
-        setForm((prev) => ({ ...prev, userPhone: value }));
-
-        const phoneRegExp = /^(01[016789]|02|0[3-9][0-9])-[0-9]{3,4}-[0-9]{4}$/;
-
-        if (!phoneRegExp !== value) {
-            setPhoneMessage("비밀번호가 일치하지 않습니다.");
-            setIsPhone(false)
-        } else {
-            setPhoneMessage("비밀번호가 일치합니다.");
-            setIsPhone(true);
-        }
+        setForm((prev) => ({ ...prev, userBirthday: value }));
     }
 
 
