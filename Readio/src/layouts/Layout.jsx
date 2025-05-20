@@ -1,0 +1,37 @@
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import Header from '../components/common/Header';
+import UserFooter from '../components/common/UserFooter';
+import UserNav from "../components/common/UserNav";
+import UserAlarm from "../components/common/UserAlarm";
+import LayoutCSS from "./Layout.module.css";
+
+function Layout()
+{
+    const [navOpen, setNavOpen] = useState (false);
+    const [alarmOpen, setAlarmOpen] = useState(false); // 추가됨
+    // 알람 상태 토글 추가됨
+    const toggleAlarm = () => {
+        setAlarmOpen(prev => !prev); // 알람 상태 토글
+    };
+    const toggleNav = () => {
+        setNavOpen(prev => !prev);
+    };
+
+    return(
+        <>
+            {/*<Header toggleNav={() => setNavOpen(prev => !prev)}/>*/}
+            {/*<Header toggleNav={toggleNav} toggleAlarm={toggleAlarm} />*/}
+            <Header toggleNav={toggleNav} toggleAlarm={toggleAlarm} />
+            <UserNav isOpen={navOpen}/>
+            <UserAlarm isOpen={alarmOpen}/>
+            <main className={LayoutCSS.main}>
+                <Outlet />
+            </main>
+            <UserFooter/>
+        </>
+
+    )
+}
+
+export default Layout;

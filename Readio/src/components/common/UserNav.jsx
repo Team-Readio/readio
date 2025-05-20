@@ -1,0 +1,49 @@
+import { NavLink } from "react-router-dom";
+import UserNavCSS from './navi.module.css';
+
+
+function UserNav({isOpen})
+{
+
+    return (
+        <>
+            <div className={`${UserNavCSS.navi} ${isOpen ? UserNavCSS.open : ''}`}>
+                <div className={UserNavCSS.naviContainer}>
+                    <div className={UserNavCSS.naviLogo}>
+                        <p className={UserNavCSS.naviLogoFont}>Readio</p>
+                        <div className={UserNavCSS.naviLine}></div>
+                    </div>
+                    <div className={UserNavCSS.naviLink}>
+                        <NavLink to="/users/edit" className={UserNavCSS.naviLinkText}>내 정보 수정</NavLink>
+                        <NavLink to="/mylibrary" className={UserNavCSS.naviLinkText}>내 서재</NavLink>
+                        <NavLink to="/feed" className={UserNavCSS.naviLinkText}>피드</NavLink>
+                        <NavLink to="/event" className={UserNavCSS.naviLinkText}>소식</NavLink>
+                        <ul style={{fontSize:'20px', paddingInlineStart:'0px'}}>고객센터
+                            <li className={UserNavCSS.naviLinkText}><NavLink to="/notice" className={UserNavCSS.naviLinkText}>공지사항</NavLink></li>
+                            <li className={UserNavCSS.naviLinkText}><NavLink to="/faq" className={UserNavCSS.naviLinkText} >FAQ</NavLink></li>
+                            <li className={UserNavCSS.naviLinkText}><NavLink to="/qna" className={UserNavCSS.naviLinkText}>Q&A</NavLink></li>
+                        </ul>
+                    </div>
+                    <div className={UserNavCSS.naviBannerContainer}>
+                        <p className={UserNavCSS.naviBannerText}>오늘의 소식</p>
+                        <NavLink to="/">
+                            <div className={UserNavCSS.naviBanner}>
+                                <img
+                                    src="/assets/banner.png"   // ← 수정: src 추가
+                                    alt="오늘의 소식 배너"      // ← 추가: 접근성용 alt
+                                />
+                            </div>
+                        </NavLink>
+                        <div className={UserNavCSS.naviButtonBox}>
+                            <input type="radio" name="notice" defaultChecked className={UserNavCSS.naviButton1}/>
+                            <input type="radio" name="notice" className={UserNavCSS.naviButton1}/>
+                            <input type="radio" name="notice" className={UserNavCSS.naviButton1}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default UserNav;
