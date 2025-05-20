@@ -108,28 +108,30 @@ function SearchBookList() {
                              </div> */}
 
 
-                                    <div className={styles.bookList}>
+                                   <div className={styles.bookList}>
                                         {bookList.map(book => (
-                                             <div className={styles.bookList} key={book.itemId}>
-                                                  <div className={styles.book}>
-                                                       <img
-                                                       src={book.cover.replace("coversum", "cover500")}
-                                                       alt={`${book.title} 표지`
-                                                       }
-                                                       />
-                                                  </div>
-                                                  <div className={styles.bookInfo}>
-                                                       <div className={styles.bookTitle}>{book.title}</div>
-                                                       <div className={styles.credits}>
-                                                       <div className={styles.bookAuthor}>{book.author}</div>
-                                                       <div className={styles.bookPublisher}>{book.publisher}</div>
+                                             <>
+                                                  <div className={styles.bookList} key={book.itemId}>
+                                                       <div className={styles.book}>
+                                                            <img
+                                                                 src={book.cover.replace("coversum", "cover500")}
+                                                                 alt={`${book.title} 표지` }
+                                                            />
                                                        </div>
-                                                       <div className={styles.bookDetail}>{book.description}</div>
+                                                       <div className={styles.bookInfo}>
+                                                            <div className={styles.bookTitle}>{book.title}</div>
+                                                            <div className={styles.credits}>
+                                                            <div className={styles.bookAuthor}>{book.author}</div>
+                                                            <div className={styles.bookPublisher}>{book.publisher}</div>
+                                                            </div>
+                                                            <div className={styles.bookDetail}>{book.description}</div>
+                                                       </div>
                                                   </div>
-                                                  <hr className={styles.bookListHr} />
-                                             </div>
+
+                                                  {/* <hr className={styles.bookListhr} /> */}
+                                             </>
                                         ))}
-                                        </div>
+                                   </div>
                                    
                             
 
@@ -138,7 +140,6 @@ function SearchBookList() {
     
      
                         </div>
-                        {/* <hr className="bookListHr" /> */}
                    </div>
               </>
          )

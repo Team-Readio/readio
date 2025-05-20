@@ -75,6 +75,7 @@ function SearchVideoList() {
                               ))} */}
 
                               {videoList.map(video => (
+                                   <>
                                         <div
                                              key={video.etag}
                                              className={styles.video}
@@ -91,8 +92,9 @@ function SearchVideoList() {
                                                   </div>
                                                   <div className={styles.videoDetail}>{video.snippet.description}</div>
                                              </div>
-                                             <hr className="videoListHr" />
                                         </div>
+                                        <hr className="videoListHr" />
+                                   </>
                               ))}
 
                          </div>

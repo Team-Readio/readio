@@ -16,7 +16,7 @@
 }
 
 .bookListhr {
-     width : 85vh;
+     width : 75vh;
      height: 1px;
 }
 
@@ -26,8 +26,8 @@
 }
 
 .book img{
-     width : 150px;
-     height : 250px;
+     width : 130px;
+     height : 200px;
      border-radius: 5px;
      box-shadow: 1px 1px 1px 1px #b0b0b0;
 }
