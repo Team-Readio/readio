@@ -25,15 +25,6 @@ function Join() {
     //     userBirthday: ''
     // });
 
-    // 초기값 세팅
-    // const [userId, setUserId] = React.useState("");
-    // const [userName, setUserName] = React.useState("");
-    // const [userPwd, setUserPwd] = React.useState("");
-    // const [userPwdConfirm, setUserPwdConfirm] = React.useState("");
-    // const [userEmail, setUserEmail] = React.useState("");
-    // const [userPhone, setUserPhone] = React.useState("");
-    // const [userBirthday, setUserBirthday] = React.useState("");
-
     // 오류 메시지 
     const [idMessage, setIdMessage] = React.useState("");
     const [nameMessage, setNameMessage] = React.useState("");
@@ -62,7 +53,7 @@ function Join() {
             setIsName(false);
         } else {
             setNameMessage("사용 가능한 이름입니다.");
-            setIsId(true);
+            setIsName(true);
         };
     }
 
@@ -105,9 +96,11 @@ function Join() {
     // 비밀번호 확인란 유효성 검사 
     const onChangePwdConfirm = (e) => {
         const value = e.target.value;
+        const currentPwd = form.userPwd;
+
         setForm((prev) => ({ ...prev, userPwdCheck: value }));
 
-        if (form.userPwd !== value) {
+        if (currentPwd !== value) {
             setPwdConfirmMessage("비밀번호가 일치하지 않습니다.");
             setIsPwdConfirm(false)
         } else {
@@ -145,20 +138,26 @@ function Join() {
 
         if (!phoneRegExp.test(value)) {
             setPhoneMessage("'-'를 포함하여 입력해 주세요.'");
-            setIsPhone(false)
+            setIsPhone(false);
         } else {
             setPhoneMessage("");
             setIsPhone(true);
         }
     }
 
-
     // 생년월일 유효성 검사 
     const onChangeBirthday = (e) => {
         const value = e.target.value;
         setForm((prev) => ({ ...prev, userBirthday: value }));
-    }
 
+        if (form.userBirthday == null) {
+            setBirthdayMessage("생년월일을 입력해 주세요.");
+            setIsBirthday(false);
+        } else {
+            setBirthdayMessage("");
+            setIsBirthday(true);
+        }
+    }
 
     // 약관 동의 상태
     const [agreeTerms, setAgreeTerms] = useState(false);
@@ -178,22 +177,17 @@ function Join() {
     const closePrivacyModal = () => setPrivacyModalOpen(false);
 
     // input 핸들러
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        });
-    };
+    // const handleChange = (e) => {
+    //     setForm({
+    //         ...form,
+    //         [e.target.name]: e.target.value
+    //     });
+    // };
 
     // 회원가입 버튼 클릭 핸들러
     const handleJoin = async () => {
         if (!agreeTerms || !agreePrivacy) {
             alert('필수 약관에 동의해주세요.');
-            return;
-        }
-
-        if (form.userPwd !== form.userPwdCheck) {
-            alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
             return;
         }
 
@@ -236,8 +230,9 @@ function Join() {
                         placeholder="이름을 입력하세요"
                         value={form.userName}
                         onChange={onChangeName} />
-                    <p className={styles.message}>{nameMessage}</p>
                 </div>
+                <p className={`${styles.message} ${isName ? styles.success : styles.error}`}>{nameMessage}</p>
+
 
                 <div className={styles.formGroup}>
                     <label>아이디</label>
@@ -247,9 +242,10 @@ function Join() {
                         placeholder="아이디를 입력하세요"
                         value={form.userId}
                         onChange={onChangeId} />
-                    <p className={styles.message}>{idMessage}</p>
                     <button type="button" className={styles.checkBtn}>중복확인</button>
                 </div>
+                <p className={`${styles.message} ${isId ? styles.success : styles.error}`}>{idMessage}</p>
+
 
                 <div className={styles.formGroup}>
                     <label>비밀번호</label>
@@ -259,8 +255,8 @@ function Join() {
                         placeholder="비밀번호 입력"
                         value={form.userPwd}
                         onChange={onChangePwd} />
-                    <p className={styles.message}>{pwdMessage}</p>
                 </div>
+                <p className={`${styles.message} ${isPwd ? styles.success : styles.error}`}>{pwdMessage}</p>
 
                 <div className={styles.formGroup}>
                     <label>비밀번호 확인</label>
@@ -270,8 +266,8 @@ function Join() {
                         placeholder="비밀번호 확인"
                         value={form.userPwdCheck}
                         onChange={onChangePwdConfirm} />
-                    <p className={styles.message}>{pwdConfirmMessage}</p>
                 </div>
+                <p className={`${styles.message} ${isPwdConfirm ? styles.success : styles.error}`}>{pwdConfirmMessage}</p>
 
                 <div className={styles.formGroup}>
                     <label>이메일</label>
@@ -281,9 +277,9 @@ function Join() {
                         placeholder="이메일을 입력하세요"
                         value={form.userEmail}
                         onChange={onChangeEmail} />
-                    <p className={styles.message}>{emailMessage}</p>
                     <button type="button" className={styles.checkBtn}>중복확인</button>
                 </div>
+                <p className={`${styles.message} ${isEmail ? styles.success : styles.error}`}>{emailMessage}</p>
 
                 <div className={styles.formGroup}>
                     <label>휴대폰 번호</label>
@@ -293,9 +289,9 @@ function Join() {
                         placeholder="휴대폰 번호 입력"
                         value={form.userPhone}
                         onChange={onChangePhone} />
-                    <p className={styles.message} >{phoneMessage}</p>
                     <button type="button" className={styles.checkBtn}>중복확인</button>
                 </div>
+                <p className={`${styles.message} ${isPhone ? styles.success : styles.error}`} >{phoneMessage}</p>
 
                 <div className={styles.formGroup}>
                     <label>생년월일</label>
@@ -304,8 +300,8 @@ function Join() {
                         type="date"
                         value={form.userBirthday}
                         onChange={onChangeBirthday} />
-                    <p className={styles.message}>{birthdayMessage}</p>
                 </div>
+                <p className={styles.message}>{birthdayMessage}</p>
             </section>
 
             <hr className={styles.line1} />
