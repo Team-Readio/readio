@@ -15,16 +15,6 @@ function Join() {
         userBirthday: ''
     });
 
-    // const [errors, setErrors] = useState({
-    //     userName: '',
-    //     userId: '',
-    //     userPwd: '',
-    //     userPwdCheck: '',
-    //     userEmail: '',
-    //     userPhone: '',
-    //     userBirthday: ''
-    // });
-
     // 오류 메시지 
     const [idMessage, setIdMessage] = React.useState("");
     const [nameMessage, setNameMessage] = React.useState("");
@@ -145,13 +135,23 @@ function Join() {
         }
     }
 
-    // 생년월일 유효성 검사 
+    // 생년월일 유효성 검사
     const onChangeBirthday = (e) => {
         const value = e.target.value;
         setForm((prev) => ({ ...prev, userBirthday: value }));
 
-        if (form.userBirthday == null) {
+        if (!value) {
             setBirthdayMessage("생년월일을 입력해 주세요.");
+            setIsBirthday(false);
+            return;
+        }
+
+        // 미래날짜 X
+        const selectDate = new Date(value);
+        const today = new Date();
+
+        if (selectDate > today) {
+            setBirthdayMessage("생년월일을 다시 확인해 주세요.");
             setIsBirthday(false);
         } else {
             setBirthdayMessage("");
@@ -176,21 +176,23 @@ function Join() {
     const openPrivacyModal = () => setPrivacyModalOpen(true);
     const closePrivacyModal = () => setPrivacyModalOpen(false);
 
-    // input 핸들러
-    // const handleChange = (e) => {
-    //     setForm({
-    //         ...form,
-    //         [e.target.name]: e.target.value
-    //     });
-    // };
-
     // 회원가입 버튼 클릭 핸들러
     const handleJoin = async () => {
-        if (!agreeTerms || !agreePrivacy) {
-            alert('필수 약관에 동의해주세요.');
+
+        if (!form.userName || !form.userId || !form.userPwd || !form.userPwdCheck || !form.userEmail || !form.userPhone || !form.userBirthday) {
+            alert("모든 필수 항목을 입력해 주세요.")
             return;
         }
 
+        if (!(isName && isId && isPwd && isPwdConfirm && isEmail && isPhone && isBirthday)) {
+            alert("입력한 정보를 다시 확인해 주세요.");
+            return;
+        }
+
+        if (!agreeTerms || !agreePrivacy) {
+            alert('필수 약관에 동의해 주세요.');
+            return;
+        }
         try {
             const response = await axios.post('http://localhost:8080/users/join', {
                 userName: form.userName,
@@ -205,7 +207,7 @@ function Join() {
             console.log(response.data);
             window.location.href = '/';
         } catch (error) {
-            alert(error.response?.data || '회원가입에 실패했습니다. 다시 시도해주세요.');
+            alert(error.response?.data || '회원가입에 실패했습니다. 다시 시도해 주세요.');
         }
     };
 
