@@ -67,8 +67,9 @@
 
 /* 유효성 메시지 */
 .message {
-  margin-top: 2px;
+  margin-top: 0px;
   margin-left: 175px;
+  font-size: 13px;
 }
 
 .message.error {

@@ -32,10 +32,17 @@ function Join() {
     const [isPhone, setIsPhone] = React.useState(false);
     const [isBirthday, setIsBirthday] = React.useState(false);
 
+    const [isIdChecked, setIsIdChecked] = useState(false);
+    const [isEmailChecked, setIsEmailCheckd] = useState(false);
+    const [isPhoneChecked, setIsphoneChecked] = useState(false);
+
+
+
     // 이름 유효성 검사
     const onChangeName = (e) => {
         const value = e.target.value;
         setForm((prev) => ({ ...prev, userName: value }));
+        setIsIdChecked(false)   
 
         const nameRegExp = /^[가-힣a-zA-Z]{2,30}$/;
         if (!nameRegExp.test(value)) {
@@ -51,13 +58,14 @@ function Join() {
     const onChangeId = (e) => {
         const value = e.target.value;
         setForm((prev) => ({ ...prev, userId: value }));
+        setIsIdChecked(false);
 
         const idRegExp = /^[a-zA-Z0-9]{6,20}$/;
         if (!idRegExp.test(value)) {
             setIdMessage("6자리 이상의 영문 혹은, 영문,숫자를 조합하여 입력해 주세요.");
             setIsId(false);
         } else {
-            setIdMessage("사용 가능한 아이디입니다.");
+            setIdMessage("중복확인을 눌러주세요.");
             setIsId(true);
         };
     }
@@ -104,7 +112,7 @@ function Join() {
         const value = e.target.value;
         setForm((prev) => ({ ...prev, userEmail: value }));
 
-        const emailRegExp = /^[a-zA-Z0-9_]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
+        const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         // @ 기준 앞 구간은 알파벳 또는 숫자 조합
         // @ 기준 뒤 구간은 알파벳 또는 숫자 조합
         // @은 반드시 1개만 존재
@@ -114,7 +122,7 @@ function Join() {
             setEmailMessage("유효한 이메일 주소를 입력해 주세요.");
             setIsEmail(false);
         } else {
-            setEmailMessage("사용 가능한 이메일입니다.");
+            setEmailMessage("중복확인을 눌러주세요.");
             setIsEmail(true);
         };
     }
@@ -130,7 +138,7 @@ function Join() {
             setPhoneMessage("'-'를 포함하여 입력해 주세요.'");
             setIsPhone(false);
         } else {
-            setPhoneMessage("");
+            setPhoneMessage("중복확인을 눌러주세요." );
             setIsPhone(true);
         }
     }
@@ -176,6 +184,86 @@ function Join() {
     const openPrivacyModal = () => setPrivacyModalOpen(true);
     const closePrivacyModal = () => setPrivacyModalOpen(false);
 
+    // 아이디 중복확인 핸들러
+    const onClickCheckId = async () => {
+
+        try {
+            const response = await axios.get(`http://localhost:8080/users/join/check-id`, {
+                params: { userId: form.userId },
+            });
+            console.log("아이디 중복확인 결과:",response.data);
+
+            if (response.data.exist) {  // 존재하면
+                setIdMessage("이미 사용중인 아이디입니다.")
+                setIsId(false);
+                setIsIdChecked(false);
+            } else {
+                setIdMessage("사용 가능한 아이디입니다.")
+                setIsId(true);
+                setIsIdChecked(true);
+
+            }
+        } catch (error) {   // 배포할땐 error변수를 _ 로 바꿀 것
+            console.log("아이디 중복확인 오류 발생:", error)
+
+            setIdMessage("중복확인 중 오류가 발생했습니다.")
+            setIsId(false);
+            setIsIdChecked(false);
+        }
+    }
+
+    // 이메일 중복확인
+    const onClickCheckEmail = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/users/join/check-email`, {
+                params: { userEmail: form.userEmail },
+            });
+
+            if (response.data.exist) {
+                setEmailMessage("이미 사용중인 이메일입니다.")
+                setIsEmail(false);
+                setIsEmailCheckd(false);
+
+            } else {
+                setEmailMessage("사용 가능한 이메일입니다.")
+                setIsEmail(true);
+                setIsEmailCheckd(true);
+
+            }
+        } catch (error) {   // 배포할땐 error변수를 _ 로 바꿀 것
+            console.log("이메일 중복확인 오류 발생:", error)
+
+            setEmailMessage("중복확인 중 오류가 발생했습니다.")
+            setIsEmail(false);
+            setIsEmailCheckd(false);
+        }
+    }
+
+    // 전화번호 중복확인
+    const onClickCheckPhone = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/users/join/check-phone`, {
+                params: { userPhone: form.userPhone },
+            });
+
+            if (response.data.exist) {
+                setPhoneMessage("이미 사용중인 전화번호입니다.")
+                setIsPhone(false);
+                setIsphoneChecked(false);
+            } else {
+                setPhoneMessage("사용 가능한 전화번호입니다.")
+                setIsPhone(true);
+                setIsphoneChecked(true)
+            }
+        } catch (error) {   // 배포할땐 error변수를 _ 로 바꿀 것
+            console.log("전화번호 중복확인 중 오류 발생:", error)
+
+            setPhoneMessage("중복확인 중 오류가 발생했습니다.")
+            setIsPhone(false);
+            setIsphoneChecked(false);
+        }
+    }
+
     // 회원가입 버튼 클릭 핸들러
     const handleJoin = async () => {
 
@@ -191,6 +279,11 @@ function Join() {
 
         if (!agreeTerms || !agreePrivacy) {
             alert('필수 약관에 동의해 주세요.');
+            return;
+        }
+
+        if (!isIdChecked) {
+            alert("아이디 중복 확인을 해주세요.")
             return;
         }
         try {
@@ -244,7 +337,7 @@ function Join() {
                         placeholder="아이디를 입력하세요"
                         value={form.userId}
                         onChange={onChangeId} />
-                    <button type="button" className={styles.checkBtn}>중복확인</button>
+                    <button type="button" className={styles.checkBtn} onClick={onClickCheckId}>중복확인</button>
                 </div>
                 <p className={`${styles.message} ${isId ? styles.success : styles.error}`}>{idMessage}</p>
 
@@ -279,7 +372,7 @@ function Join() {
                         placeholder="이메일을 입력하세요"
                         value={form.userEmail}
                         onChange={onChangeEmail} />
-                    <button type="button" className={styles.checkBtn}>중복확인</button>
+                    <button type="button" className={styles.checkBtn} onClick={onClickCheckEmail}>중복확인</button>
                 </div>
                 <p className={`${styles.message} ${isEmail ? styles.success : styles.error}`}>{emailMessage}</p>
 
@@ -291,7 +384,7 @@ function Join() {
                         placeholder="휴대폰 번호 입력"
                         value={form.userPhone}
                         onChange={onChangePhone} />
-                    <button type="button" className={styles.checkBtn}>중복확인</button>
+                    <button type="button" className={styles.checkBtn} onClick={onClickCheckPhone}>중복확인</button>
                 </div>
                 <p className={`${styles.message} ${isPhone ? styles.success : styles.error}`} >{phoneMessage}</p>
 
@@ -303,7 +396,7 @@ function Join() {
                         value={form.userBirthday}
                         onChange={onChangeBirthday} />
                 </div>
-                <p className={styles.message}>{birthdayMessage}</p>
+                <p className={`${styles.message} ${isBirthday ? styles.success : styles.error}`}>{birthdayMessage}</p>
             </section>
 
             <hr className={styles.line1} />
