@@ -109,6 +109,7 @@ function App() {
             <Route path="reported/post/detail" element={<ReportedPostDetailPage />} />
             <Route path="/admin/notice" element={<AdminNoticeList />} />
             <Route path="/admin/notice/writing" element={<AdminNoticeWriting />} />
+            <Route path="/admin/notice/edit/:noticeId" element={<AdminNoticeWriting />} />
             <Route path="/admin/faq" element={<AdminFaqList />} />
             <Route path="/admin/faq/writing" element={<AdminFaqWriting />} />
             <Route path="/admin/qna" element={<AdminQnaList />} />
