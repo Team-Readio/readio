@@ -1,37 +1,51 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { testBooks } from '../../apis/BookAPI';
+import { useLocation, useNavigate } from 'react-router-dom';
 import search from '../../assets/search.png';
 import UserMainCSS from '../user/UserMain.module.css';
+import { testBooks } from './../../apis/BookAPI';
 import styles from './SearchBookList.module.css';
 
 function SearchBookList() {
 
      const navigate = useNavigate();
-
-     // const [book, setBook] = useState([]);
-     // const [bookCover, setBookCover] = useState('');
+     const location = useLocation();
 
      const [bookList, setBookList] = useState([]);
      const [searchVideo, setSearchVideo] = useState('');
 
+     const queryParams = new URLSearchParams(location.search);
+     const query = queryParams.get('query');
+
+     // useEffect(() => {
+     //      const data = testBooks();  // 동기 호출
+     //      console.log("로컬 테스트 JSON 결과:", data);
+
+     //      if (data && data.item) {
+     //           setBookList(data.item);  // 바로 상태에 반영
+     //      }
+     // }, []);
+
+     // useEffect(() => {
+     //      if(query) {
+     //           console.log('도서 검색어 : ', query);
+     //      }
+     // }, [query]);
+
      useEffect(() => {
-          const data = testBooks();  // 동기 호출
-          console.log("로컬 테스트 JSON 결과:", data);
-
+          const data = testBooks(); // 동기 호출
           if (data && data.item) {
-               setBookList(data.item);  // 바로 상태에 반영
+               if (query) {
+                    const filteredBooks = data.item.filter(book =>
+                         book.title.toLowerCase().includes(query.toLowerCase())
+                    );
+                    setBookList(filteredBooks);  // 🔍 검색 결과 반영
+               } else {
+                    setBookList(data.item); // 🔄 기본 전체 목록
+               }
           }
-     }, []);
+     }, [query]); // ✅ query 변경될 때마다 실행
 
 
-
-     // const [searchVideo, setSearchVideo] = useState('');
-
-     // 책 상세 페이지로 이동하게 하기 
-     // const onClickVideoPage = () => {
-     //      navigate(`/bookPage`);
-     // }
 
 
      // 검색하면 영상 검색 결과 리스트 뜨게 코드 작성....
@@ -42,8 +56,6 @@ function SearchBookList() {
      const onEnterkeyHandler = (e) => {
           if (e.key == 'Enter') {
                console.log('Enter key', searchVideo);
-
-               // navigate(`/search?value=${search}`, {replace: false});
 
                navigate(`/search/video?query=${encodeURIComponent(searchVideo)}`);
           }
@@ -80,7 +92,10 @@ function SearchBookList() {
 
                    <div className={styles.container}>
 
-                        <div className={styles.SearchListTitle}># 키워드에 대한 검색 결과</div>
+                        {/* <div className={styles.SearchListTitle}># 키워드에 대한 검색 결과</div> */}
+                        <div className={styles.SearchListTitle}>
+                              
+                        </div>
                         <hr className={styles.SearchbookListHr} />
 
 
@@ -111,13 +126,6 @@ function SearchBookList() {
                                         </>
                                         ))}
                                    </div>
-
-                                   
-                            
-
-
-                             {/* <hr className="bookListHr" /> */}
-    
      
                         </div>
                    </div>

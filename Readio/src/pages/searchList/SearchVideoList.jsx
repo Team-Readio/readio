@@ -19,17 +19,6 @@ function SearchVideoList() {
 
      const [searchInput, setSearchInput] = useState(searchQuery);
 
-
-
-     // useEffect(
-     //      () => {
-     //           // getVideos.then(data => setVideoList(data));
-     //           // fetch(sample).then(data => setVideoList(data.items));
-     //           setVideoList(getVideosTest().items);
-     //           console.log("test", videoList); 
-     //      }, []
-     // );
-
      useEffect (
           () => {
                const allVideos = getVideosTest().items;
@@ -61,8 +50,6 @@ function SearchVideoList() {
           if (e.key == 'Enter') {
                console.log('Enter key', searchInput);
 
-               // navigate(`/search?value=${search}`, {replace: false});
-
                navigate(`/search/video?query=${encodeURIComponent(searchInput)}`);
           }
      };
@@ -80,6 +67,7 @@ function SearchVideoList() {
                                                   <input className={UserMainCSS.mainSearchInput} 
                                                             type="text" 
                                                             name="search" 
+                                                            value={searchInput}
                                                             onChange={onSearchChangeHandler}
                                                             onKeyDown={onEnterkeyHandler}
                                                             placeholder="검색어를 입력하세요"/>
@@ -95,7 +83,6 @@ function SearchVideoList() {
                </div>
 
              <div className={styles.container}>
-                    {/* <div className={styles.SearchListTitle}># 키워드에 대한 검색 결과</div> */}
                     <div className={styles.SearchListTitle}>
                          {searchQuery ? ` # ${searchQuery}에 대한 검색 결과` : '전체 영상 리스트'}
                     </div>
