@@ -106,8 +106,8 @@ function SearchBookList() {
                                                   </div>
                                                   <div className={styles.bookDetail}>{book.description}</div>
                                                   </div>
-                                                  <hr className={styles.bookListHr} />
                                              </div>
+                                                  <hr className={styles.bookListHr} />
                                         </>
                                         ))}
                                    </div>

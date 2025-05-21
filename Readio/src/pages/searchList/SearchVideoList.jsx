@@ -103,22 +103,24 @@ function SearchVideoList() {
                     <div className={styles.SearchVideoList}>
                          {videoList.length > 0 ? (
                          videoList.map((video) => (
-                         <div
-                              key={video.etag}
-                              className={styles.video}
-                              onClick={() => onClickVideoPage(video.id.videoId)}
-                         >
-                              <Video video={video} />
+                              <>
+                              <div
+                                   key={video.etag}
+                                   className={styles.video}
+                                   onClick={() => onClickVideoPage(video.id.videoId)}
+                                   >
+                                   <Video video={video} />
 
-                              <div className={styles.videoInfo}>
-                              <div className={styles.videoTitle}>{video.snippet.title}</div>
-                              <div className={styles.videoDate}>
-                                   {video.snippet.publishedAt.slice(0, 10).replace(/-/g, '.')}
-                              </div>
-                              <div className={styles.videoDetail}>{video.snippet.description}</div>
-                              </div>
+                                   <div className={styles.videoInfo}>
+                                   <div className={styles.videoTitle}>{video.snippet.title}</div>
+                                   <div className={styles.videoDate}>
+                                        {video.snippet.publishedAt.slice(0, 10).replace(/-/g, '.')}
+                                   </div>
+                                   <div className={styles.videoDetail}>{video.snippet.description}</div>
+                                   </div>
+                              </div>    
                               <hr className={styles.videoListHr} />
-                         </div>
+                              </>
                          ))
                          ) : (
                          <p>검색 결과가 없습니다.</p>
