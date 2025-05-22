@@ -42,7 +42,7 @@ function Join() {
     const onChangeName = (e) => {
         const value = e.target.value;
         setForm((prev) => ({ ...prev, userName: value }));
-        setIsIdChecked(false)   
+        setIsIdChecked(false)
 
         const nameRegExp = /^[가-힣a-zA-Z]{2,30}$/;
         if (!nameRegExp.test(value)) {
@@ -138,7 +138,7 @@ function Join() {
             setPhoneMessage("'-'를 포함하여 입력해 주세요.'");
             setIsPhone(false);
         } else {
-            setPhoneMessage("중복확인을 눌러주세요." );
+            setPhoneMessage("중복확인을 눌러주세요.");
             setIsPhone(true);
         }
     }
@@ -191,7 +191,7 @@ function Join() {
             const response = await axios.get(`http://localhost:8080/users/join/check-id`, {
                 params: { userId: form.userId },
             });
-            console.log("아이디 중복확인 결과:",response.data);
+            console.log("아이디 중복확인 결과:", response.data);
 
             if (response.data.exist) {  // 존재하면
                 setIdMessage("이미 사용중인 아이디입니다.")
@@ -282,8 +282,9 @@ function Join() {
             return;
         }
 
-        if (!isIdChecked) {
-            alert("아이디 중복 확인을 해주세요.")
+        if (!(isName && isPwd && isPwdConfirm && isBirthday &&
+            isIdChecked && isEmailChecked && isPhoneChecked)) {
+            alert("중복 확인을 다시 확인해 주세요.")
             return;
         }
         try {
