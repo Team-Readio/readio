@@ -1,5 +1,5 @@
 import sample from "./test.json";
-import {callVideoInsertAPI, callVideosAPI} from "./VideoAPICalls.js";
+import {callTopVideosAPI, callVideoInsertAPI, callVideosAPI} from "./VideoAPICalls.js";
 
 
 export async function getVideosByKeyword(type, keyword, dispatch) {
@@ -15,6 +15,12 @@ export async function getVideosByKeyword(type, keyword, dispatch) {
         return result;
     }
 }
+
+export async function getTopVideos(dispatch)
+{
+    return await dispatch(callTopVideosAPI());
+}
+
 
 export async function getNewVideos(type, keyword, dispatch, num) {
 
@@ -79,18 +85,7 @@ export async function getNewVideos(type, keyword, dispatch, num) {
 //     .then(data => data.items);
 // }
 
-export function getVideosTest(dispatch) {
-    const result = sample.items;
-    for (let i = 0; i < result.length; i++) {
-        const form = {
-            videoId: result[i].id.videoId,
-            title: result[i].snippet.title,
-            description: result[i].snippet.description,
-            channelTitle: result[i].snippet.channelTitle,
-            thumbnail: result[i].snippet.thumbnails.high.url
-        };
-        dispatch(callVideoInsertAPI({form}));
-    }
-
+export function getVideosTest()
+{
     return sample;
 }

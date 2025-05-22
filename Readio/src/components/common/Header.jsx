@@ -10,12 +10,10 @@ import HeaderCSS from './Header.module.css';
 function Header({toggleNav}) {
     const navigate = useNavigate();
 
-    const dispatch = useDispatch; 
+    const dispatch = useDispatch
     // const loginMember = useEslector((state) => state.memberReducer);
     const isLogin = window.localStorage.getItem('accessToken');
     const [search, setSearch] = useState('');
-
-    const [searchType, setSearchType] = useState('video'); // 추가 
 
     const [loginModal, setLoginModal] = useState(false);
 
@@ -33,23 +31,11 @@ function Header({toggleNav}) {
         if (e.key == 'Enter') {
             console.log('Enter key', search);
 
-            // navigate(`/search?value=${search}`, {replace: false});
-            navigate(`/search/${searchType}`); // 추가 => 선택된 검색 타입에 따라 경로 이동
+            navigate(`/search?value=${search}`, {replace: false});
 
-            // 검색 타입과 검색어를 함께 넘겨야 할때 쓸 코드 작성 
-            
             window.location.reload();
         }
     };
-
-    const onSearchClickHandler = () => { // 함수 추가함
-        navigate(`/search/${searchType}`); // 추가 => 선택된 검색 타입에 따라 경로 이동
-
-        // 검색 타입과 검색어를 함께 넘겨야 할때 쓸 코드 작성 
-
-        window.location.reload();
-    }
-
 
     const onClickLogoHandler = () => {
         navigate('/', {replace: true});
@@ -77,9 +63,9 @@ function Header({toggleNav}) {
     function BeforeLogin() {
         return (
             <div className={HeaderCSS.headerLogin}>
-                <NavLink to="/users/login" className={HeaderCSS.headerLoginBt}>로그인</NavLink>
+                <NavLink to="/login" className={HeaderCSS.headerLoginBt}>로그인</NavLink>
                 &nbsp;
-                <NavLink to="/users/join" className={HeaderCSS.headerLoginBt}>회원가입</NavLink>
+                <NavLink to="/join" className={HeaderCSS.headerLoginBt}>회원가입</NavLink>
             </div>
         );
     }
@@ -116,10 +102,7 @@ function Header({toggleNav}) {
                 </button>
                 <div className={HeaderCSS.rightButtons}>
                 <div className={HeaderCSS.headerSearchDiv}>
-                    <select className={HeaderCSS.headerSearchOption}
-                            value = {searchType} // 추가
-                            onChange={(e) => setSearchType(e.target.value)} // 추가
-                        >
+                    <select className={HeaderCSS.headerSearchOption}>
                         <option value={"video"} style={{background: 'rgb(77,84,67)'}}>영상</option>
                         <option value={"book"} style={{background: 'rgb(77,84,67)'}}>도서</option>
                     </select>
@@ -131,9 +114,7 @@ function Header({toggleNav}) {
                         onChange={onSearchChangeHandler}
                         className={HeaderCSS.headerSearch}
                     />
-                    <button className={HeaderCSS.buttonNone}
-                            onClick={onSearchClickHandler} // 추가 => 클릭 시 검색
-                    ><img src={searchIcon}/></button>
+                    <button className={HeaderCSS.buttonNone}><img src={searchIcon}/></button>
                 </div>
                 <button className={HeaderCSS.headerAlarm}>
                     <img src={bell} />

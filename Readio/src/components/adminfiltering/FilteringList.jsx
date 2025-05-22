@@ -1,9 +1,5 @@
+import { Link } from 'react-router-dom';
 import FListCSS from './Filtering.module.css';
-import {Link, useNavigate} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
-import {callFilteringGroupsAPI} from "../../apis/FilteringAPICalls.js";
-import {useEffect, useState} from "react";
-import dayjs from "dayjs";
 
 function FilteringList()
 {
@@ -12,8 +8,6 @@ function FilteringList()
     const filteringGroups  = useSelector(state => state.filtering);
     const filteringGroupList = filteringGroups.data;
     const navigate = useNavigate();
-    console.log("filteringGroupList", filteringGroupList);
-
 
     const pageInfo = filteringGroups.pageInfo;
     const [start, setStart] = useState(0);
@@ -25,13 +19,11 @@ function FilteringList()
             pageNumber.push(i);
         }
     }
-    console.log("pageNumber", pageNumber);
-    console.log("pageInfo", pageInfo);
 
     useEffect(() => {
         setStart((currentPage - 1) * 5);
         dispatch(callFilteringGroupsAPI({currentPage: currentPage}));
-    }, [currentPage]);
+    }, [currentPage, filteringGroupList]);
 
     const onClickFilteringGroupHandler = (groupId) => {
         navigate(`/admin/filtering/${groupId}`);
@@ -59,11 +51,10 @@ function FilteringList()
 
                     <tr key={filteringGroup.groupId}>
                         <td>{filteringGroup.groupId}</td>
-                        <td>{filteringGroup.isActive ? "활성" : "비활성"}</td>
+                        <td>{filteringGroup.isActive === "Y" ? "활성" : "비활성"}</td>
                         <td>{dayjs(filteringGroup.createAt).format('YYYY-MM-DD')}</td>
                         <td onClick={() => onClickFilteringGroupHandler(filteringGroup.groupId)}>{filteringGroup.title}</td>
                     </tr>
-                    ))}
                 </tbody>
             </table>
             <div className={FListCSS.paging}>
@@ -85,7 +76,7 @@ function FilteringList()
                         <button
                             style={
                                 currentPage === num
-                                    ? { backgroundColor: 'orange' }
+                                    ? { backgroundColor: '#AF4C3F' }
                                     : null
                             }
                             className={FListCSS.pagingBtn}
