@@ -1,27 +1,9 @@
-import axios from 'axios';
 import { useState } from 'react';
 import styles from './Join.module.css';
 
 function Join() {
 
-    // 회원가입 폼 상태
-    const [form, setForm] = useState({
-        userName: '',
-        userId: '',
-        userPwd: '',
-        userPwdCheck: '',
-        userEmail: '',
-        userPhone: '',
-        userBirthday: ''
-    });
-
-    // 약관 동의 상태
-    const [agreeTerms, setAgreeTerms] = useState(false);
-    const [agreePrivacy, setAgreePrivacy] = useState(false);
-    // const [agreeMarketing, setAgreeMarketing] = useState(false);
-    // const [agreeThirdParty, setAgreeThirdParty] = useState(false);
-
-    // 모달 상태
+    // 약관 동의 상태 관리 _모달 기능
     const [isTermsModalOpen, setTermsModalOpen] = useState(false);
     const [isPrivacyModalOpen, setPrivacyModalOpen] = useState(false);
 
@@ -31,46 +13,6 @@ function Join() {
 
     const openPrivacyModal = () => setPrivacyModalOpen(true);
     const closePrivacyModal = () => setPrivacyModalOpen(false);
-
-    // input 핸들러
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    // 회원가입 버튼 클릭 핸들러
-    const handleJoin = async () => {
-        if (!agreeTerms || !agreePrivacy) {
-            alert('필수 약관에 동의해주세요.');
-            return;
-        }
-
-        if (form.userPwd !== form.userPwdCheck) {
-            alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
-            return;
-        }
-
-        try {
-            const response = await axios.post('http://localhost:8080/users/join', {
-                userName: form.userName,
-                userId: form.userId,
-                userPwd: form.userPwd,
-                userEmail: form.userEmail,
-                userPhone: form.userPhone,
-                userBirthday: form.userBirthday
-            });
-
-            alert('회원가입성공');
-            console.log(response.data);
-            window.location.href = '/';
-        } catch (error) {
-            alert(error.response?.data || '회원가입에 실패했습니다. 다시 시도해주세요.');
-        }
-    };
-
-
 
     return (
         <div className={styles.joinPage}>
@@ -85,34 +27,34 @@ function Join() {
 
                 <div className={styles.formGroup}>
                     <label>이름</label>
-                    <input name="userName" type="text" placeholder="이름을 입력하세요" onChange={handleChange} />
+                    <input type="text" placeholder="이름을 입력하세요" />
                 </div>
                 <div className={styles.formGroup}>
                     <label>아이디</label>
-                    <input name="userId" type="text" placeholder="아이디를 입력하세요" onChange={handleChange} />
+                    <input type="text" placeholder="아이디를 입력하세요" />
                     <button type="button" className={styles.checkBtn}>중복확인</button>
                 </div>
                 <div className={styles.formGroup}>
                     <label>비밀번호</label>
-                    <input name="userPwd" type="password" placeholder="비밀번호 입력" onChange={handleChange} />
+                    <input type="password" placeholder="비밀번호 입력" />
                 </div>
                 <div className={styles.formGroup}>
                     <label>비밀번호 확인</label>
-                    <input name="userPwdCheck" type="password" placeholder="비밀번호 확인" onChange={handleChange} />
+                    <input type="password" placeholder="비밀번호 확인" />
                 </div>
                 <div className={styles.formGroup}>
                     <label>이메일</label>
-                    <input name="userEmail" type="email" placeholder="이메일을 입력하세요" onChange={handleChange} />
+                    <input type="email" placeholder="이메일을 입력하세요" />
                     <button type="button" className={styles.checkBtn}>중복확인</button>
                 </div>
                 <div className={styles.formGroup}>
                     <label>휴대폰 번호</label>
-                    <input name="userPhone" type="tel" placeholder="휴대폰 번호 입력" onChange={handleChange} />
+                    <input type="phone" placeholder="휴대폰 번호 입력" />
                     <button type="button" className={styles.checkBtn}>중복확인</button>
                 </div>
                 <div className={styles.formGroup}>
                     <label>생년월일</label>
-                    <input name="userBirthday" type="date" onChange={handleChange} />
+                    <input type="date" />
                 </div>
             </section>
 
@@ -123,8 +65,7 @@ function Join() {
 
 
                 <div className={styles.checkboxRow}>
-                    <label>
-                        <input type="checkbox" checked={agreeTerms} onChange={(e) => setAgreeTerms(e.target.checked)} /> [필수] 사이트 이용약관 동의</label>
+                    <label><input type="checkbox" /> [필수] 사이트 이용약관 동의</label>
                     <button type="button" onClick={openTermsModal} className={styles.modalBtn}>
                         자세히보기
                     </button>
@@ -139,6 +80,7 @@ function Join() {
                                     회사와 회원의 권리와 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
                                 <p>보관 기간은 서비스 탈퇴 시까지입니다.</p>
                                 <p>블라블라~~</p>
+
                             </div>
                             <button onClick={closeTermsModal} className={styles.closeBtn}>닫기</button>
                         </div>
@@ -147,7 +89,7 @@ function Join() {
 
 
                 <div className={styles.checkboxGroup}>
-                    <label><input type="checkbox" checked={agreePrivacy} onChange={(e) => setAgreePrivacy(e.target.checked)} /> [필수] 개인정보 수집 및 이용 동의</label>
+                    <label><input type="checkbox" /> [필수] 개인정보 수집 및 이용 동의</label>
                     <button type="button" onClick={openPrivacyModal} className={styles.modalBtn}>
                         자세히 보기
                     </button>
@@ -177,7 +119,7 @@ function Join() {
 
             <hr className={styles.line1} />
             <div className={styles.submitBtnWrap}>
-                <button type="submit" onClick={handleJoin} className={styles.submitBtn}>동의하고 가입하기</button>
+                <button type="submit" className={styles.submitBtn}>동의하고 가입하기</button>
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-.adminMainP {
+p {
     display: inline;
     margin:10px;
 }
@@ -27,25 +27,17 @@
 .font1{
     font-size: 24px;
     font-weight: 600;
-    display: inline;
-    margin:10px;
-
 }
 
 .font2{
     font-size: 18px;
     font-weight: 800;
-    display: inline;
-    margin:10px;
 }
 
 .font3{
     font-size: 18px;
     font-weight: 200;
     margin:6px;
-    display: inline;
-    margin:10px;
-
 }
 
 .linkFont {
@@ -134,36 +126,6 @@
     margin: 5px;
 }
 
-
-.videoDiv {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    height: 300px;
-}
-
-.videoTitleDiv {
-    height:50px;
-}
-
-.videoChannelFont {
-    font-size: 14px;
-}
-
-.videoThumbnail {
-    border-radius: 10px;
-    margin: 5px;
-    width: 300px !important;
-    height: 200px;
-    object-fit: cover;
-}
-
-.videoTitleFont {
-    font-size: 16px;
-    font-weight: 600;
-}
-
 .scrollButton {
     all: unset;
     margin:5px;
@@ -233,13 +195,12 @@
     font-size: 15px;
     font-weight: 200;
     margin:6px;
-    
 }
 
 /* 관심분야 키워드 */
 
 .interestsMain {
-    /*width:1800px;*/
+    width:1800px;
     min-height: 200px;
     max-height: 200px;
     align-items: center;

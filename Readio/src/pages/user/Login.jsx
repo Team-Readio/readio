@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import loginImage from '../../assets/login.png';
 import LoginCSS from './Login.module.css';
 
@@ -64,9 +63,9 @@ const Login = () => {
 
                     <button type="submit" className={LoginCSS.submitBtn}>로그인</button>
                     <div className={LoginCSS.findLinks}>
-                        <Link to="/account">아이디 찾기</Link>
+                        <a href="/find-id">아이디 찾기</a>
                         <span className={LoginCSS.divider}>|</span>
-                        <Link to="/account/findpwd">비밀번호 찾기</Link>
+                        <a href="/find-password">비밀번호 찾기</a>
                     </div>
                 </form>
             </div>
