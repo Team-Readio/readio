@@ -52,23 +52,26 @@ function App() {
             <Route path="/bookmark" element={<Bookmark />} />
             <Route path="/notice" element={<Search />} />
           </Route>
-          <Route path="/admin" element={<AdminLayout/>}>
-            <Route index element={<AdminMain/>}/>
-            <Route path="filtering/list" element={<FilteringListPage/>}/>
-            <Route path="filtering/create" element={<FilteringCreatePage/>}/>
-            <Route path="filtering/detail" element={<FilteringDetailPage/>}/>
-            <Route path="filtering/modify" element={<FilteringModifyPage/>}/>
-            <Route path="reported/review/list" element={<ReportedReviewListPage/>} />
-            <Route path="reported/review/detail" element={<ReportedReviewDetailPage/>} />
-            <Route path="reported/post/list" element={<ReportedPostListPage/>} />
-            <Route path="reported/post/detail" element={<ReportedPostDetailPage/>} />
-            <Route path="/admin/notice" element={<AdminNoticeList/>}/>
-            <Route path="/admin/notice/writing" element={<AdminNoticeWriting/>}/>
-            <Route path="/admin/faq" element={<AdminFaqList/>}/>
-            <Route path="/admin/faq/writing" element={<AdminFaqWriting/>}/>
-            <Route path="/admin/qna" element={<AdminQnaList/>}/>
-            <Route path="/admin/qna/answer" element={<AdminQnaAnswer/>}/>
-            <Route path="/admin/qna/detail" element={<AdminQnaDetail/>}/>
+
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminMain />} />
+            <Route path="users/list" element={<UserManagement />} />
+            <Route path="filtering" element={<FilteringListPage />} />
+            <Route path="filtering/create" element={<FilteringCreatePage />} />
+            <Route path="filtering/:groupId" element={<FilteringDetailPage />} />
+            <Route path="filtering/:groupId/edit" element={<FilteringModifyPage />} />
+            <Route path="reported/review/list" element={<ReportedReviewListPage />} />
+            <Route path="reported/review/detail" element={<ReportedReviewDetailPage />} />
+            <Route path="reported/post/list" element={<ReportedPostListPage />} />
+            <Route path="reported/post/detail" element={<ReportedPostDetailPage />} />
+            <Route path="/admin/notice" element={<AdminNoticeList />} />
+            <Route path="/admin/notice/writing" element={<AdminNoticeWriting />} />
+            <Route path="/admin/faq" element={<AdminFaqList />} />
+            <Route path="/admin/faq/writing" element={<AdminFaqWriting />} />
+            <Route path="/admin/qna" element={<AdminQnaList />} />
+            <Route path="/admin/qna/answer" element={<AdminQnaAnswer />} />
+            <Route path="/admin/qna/detail" element={<AdminQnaDetail />} />
+            <Route path="/admin/interest" element={< AdminInterestManager />} />
           </Route>
           <Route path="post/writing" element={<PostWriting />} />
         </Routes>

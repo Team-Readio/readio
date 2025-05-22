@@ -4,6 +4,29 @@ import FListCSS from './Filtering.module.css';
 
 function FilteringCreate()
 {
+
+    const dispatch = useDispatch();
+    const [groupForm, setGroupForm] = useState({
+        title: "",
+        content: "",
+    });
+    const navigate = useNavigate();
+
+    const onChangeHandler = (e) => {
+        console.log(e.target.name, e.target.value);
+        setGroupForm({
+            ...groupForm,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    // 필터링 추가 및 저장
+
+    const [form, setForm] = useState([]);
+    const [final, setFinal] = useState([{
+        videoId: "",
+        keyword: "",
+    }]);
     const [filterings, setFilterings] = useState([]);
     const [id, setId] = useState(1);
     const CreateFiltering = () => {
@@ -27,15 +50,48 @@ function FilteringCreate()
                 filtering.id === id
                 ? { ...filtering, keyword: e.target.value, isSaved: true }
                 : filtering
-            )
-        );
+        ));
     }
 
-    useEffect(() => {
-        console.log('filterings 업데이트됨:', filterings);
-    }, [filterings]);
+    const saveAll = async () => {
+        try {
+            const result = await dispatch(callFilteringGroupCreateAPI({ groupForm }));
+            console.log("result", result);
 
+            await new Promise(resolve => setTimeout(resolve, 500));
 
+            if (result) {
+                const groupId = result.data;
+                const newFinal = filterings.map(filtering => {
+                    const firstChar = filtering.keyword?.[0];
+
+                    if (/^[a-zA-Z0-9]$/.test(firstChar)) {
+                        return {
+                            groupId: groupId,
+                            videoId: filtering.keyword,
+                            keyword: "",
+                        };
+                    } else {
+                        return {
+                            groupId: groupId,
+                            videoId: "",
+                            keyword: filtering.keyword,
+                        };
+                    }
+                });
+
+                setFinal(newFinal);
+                await dispatch(callFilteringsCreateAPI({
+                    groupId: groupId,
+                    filterings: newFinal
+                }));
+
+                navigate('/admin/filtering');
+            }
+        } catch (error) {
+            console.error("Error in saveAll:", error);
+        }
+    };
 
     return (
         <div className={FListCSS.container}>
