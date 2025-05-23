@@ -5,8 +5,8 @@ import LoginCSS from './Login.module.css';
 
 const Login = () => {
     const [formData, setFormData] = useState({
-        username: '',
-        password: '',
+        userName: '',
+        userPwd: ''
     });
 
     const handleChange = (e) => {
@@ -17,11 +17,36 @@ const Login = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
+        try {
+            const response = await fetch("http://localhost:8080/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error("로그인 실패");
+            }
+
+            const data = await response.json();
+
+            localStorage.setItem("accessToken", data.accessToken);
+
+            window.location.href = "/";
+
+        } catch (error) {
+            alert("로그인에 실패했습니다.");
+            console.log(error);
+        }
         console.log(formData);
     };
+
+
 
     return (
 
@@ -37,12 +62,12 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className={LoginCSS.inputGroup}>
-                        <label htmlFor="username">아이디</label>
+                        <label htmlFor="userName">아이디</label>
                         <input
                             type="text"
-                            id="username"
-                            name="username"
-                            value={formData.username}
+                            id="userName"
+                            name="userName"
+                            value={formData.userName}
                             onChange={handleChange}
                             placeholder="아이디를 입력하세요"
                             required
@@ -50,12 +75,12 @@ const Login = () => {
                     </div>
 
                     <div className={LoginCSS.inputGroup}>
-                        <label htmlFor="password">비밀번호</label>
+                        <label htmlFor="userPwd">비밀번호</label>
                         <input
                             type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
+                            id="userPwd"
+                            name="userPwd"
+                            value={formData.userPwd}
                             onChange={handleChange}
                             placeholder="비밀번호를 입력하세요"
                             required
