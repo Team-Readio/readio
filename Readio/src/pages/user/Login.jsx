@@ -5,8 +5,8 @@ import LoginCSS from './Login.module.css';
 
 const Login = () => {
     const [formData, setFormData] = useState({
-        userName: '',
-        userPwd: ''
+        username: '',
+        password: ''
     });
 
     const handleChange = (e) => {
@@ -26,7 +26,8 @@ const Login = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formData),
+                credentials: "include" // 쿠키를 포함하여 요청
             });
 
             if (!response.ok) {
@@ -47,7 +48,6 @@ const Login = () => {
     };
 
 
-
     return (
 
         <div className={LoginCSS.loginPage} style={{ backgroundImage: `url(${loginImage})` }}>
@@ -62,12 +62,12 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className={LoginCSS.inputGroup}>
-                        <label htmlFor="userName">아이디</label>
+                        <label htmlFor="username">아이디</label>
                         <input
                             type="text"
-                            id="userName"
-                            name="userName"
-                            value={formData.userName}
+                            id="username"
+                            name="username"
+                            value={formData.username}
                             onChange={handleChange}
                             placeholder="아이디를 입력하세요"
                             required
@@ -75,12 +75,12 @@ const Login = () => {
                     </div>
 
                     <div className={LoginCSS.inputGroup}>
-                        <label htmlFor="userPwd">비밀번호</label>
+                        <label htmlFor="password">비밀번호</label>
                         <input
                             type="password"
-                            id="userPwd"
-                            name="userPwd"
-                            value={formData.userPwd}
+                            id="password"
+                            name="password"
+                            value={formData.password}
                             onChange={handleChange}
                             placeholder="비밀번호를 입력하세요"
                             required
