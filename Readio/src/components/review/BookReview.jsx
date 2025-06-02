@@ -32,7 +32,7 @@ function BookReview({ bookIsbn, isLoggedIn, getAuthToken, onReviewsLoaded }) {
                 throw new Error(`리뷰 목록을 불러오는 데 실패했습니다: ${reviewsRes.status} ${reviewsRes.statusText}`);
             }
             const responseData = await reviewsRes.json();
-            const actualReviews = responseData.data || responseData; 
+            const actualReviews = responseData.data || responseData;
             
             // createdAt이 LocalDateTime -> ISO String으로 오므로 Date 객체로 변환
             const formattedReviews = actualReviews.map(review => ({
@@ -67,6 +67,9 @@ function BookReview({ bookIsbn, isLoggedIn, getAuthToken, onReviewsLoaded }) {
             const token = getAuthToken(); // 이 함수가 isLoggedIn 상태도 업데이트합니다.
             if (token) {
                 try {
+                    // JWT 토큰 파싱 라이브러리를 사용한다면 아래 주석 해제 (npm install jwt-decode 필요)
+                    // const decodedToken = jwtDecode(token);
+                    // 직접 디코딩 (base64)
                     const decodedToken = JSON.parse(atob(token.split('.')[1]));
                     setCurrentLoggedInUserId(decodedToken.sub);
                     console.log("[BookReview.jsx] 로그인된 사용자 ID (토큰 디코딩 - decodedToken.sub):", decodedToken.sub);
@@ -152,29 +155,42 @@ function BookReview({ bookIsbn, isLoggedIn, getAuthToken, onReviewsLoaded }) {
             return;
         }
         
-        try {
-            // --- ✨ 추가된 디버깅 로그 ✨ ---
-            const currentReviewState = reviews.find(r => r.reviewId === reviewId);
-            console.log(`DEBUG_FE_CLICK: Review ID ${reviewId}, currentReviewState.isLiked: ${currentReviewState ? currentReviewState.isLiked : 'N/A'}`);
-            // -----------------------------
-
-            // 현재 리뷰의 좋아요 상태를 찾아 등록/해제 요청 구분
-            const reviewToToggle = reviews.find(r => r.reviewId === reviewId);
-            if (!reviewToToggle) {
-                console.error("좋아요를 누를 리뷰를 찾을 수 없습니다.");
-                return;
+        // ✨ 중요: 'prevReviews' 콜백 함수를 사용하여 최신 상태를 기반으로 'reviewToToggle'을 찾습니다. ✨
+        // 이렇게 하면 클로저 문제로 인한 stale closure (오래된 reviews 상태 참조)를 방지할 수 있습니다.
+        let currentIsLiked = false;
+        setReviews(prevReviews => {
+            const reviewToUpdate = prevReviews.find(r => r.reviewId === reviewId);
+            if (reviewToUpdate) {
+                currentIsLiked = reviewToUpdate.isLiked; // API 호출에 사용할 현재 isLiked 값 저장
+                return prevReviews.map(review => {
+                    if (review.reviewId === reviewId) {
+                        return {
+                            ...review,
+                            isLiked: !review.isLiked, // UI에서 좋아요 상태 토글
+                            likesCount: review.isLiked ? review.likesCount - 1 : review.likesCount + 1 // UI에서 좋아요 수 업데이트
+                        };
+                    }
+                    return review;
+                });
             }
+            return prevReviews; // 해당 리뷰를 찾지 못했으면 이전 상태 유지
+        });
+        
+        // ✨ API 호출은 'currentIsLiked' 값을 사용합니다.
+        // 이는 setReviews가 동기적으로 완료되지 않아도 정확한 이전 상태를 나타냅니다. ✨
+        try {
+            console.log(`DEBUG_FE_CLICK: Review ID ${reviewId}, currentIsLiked (determined for API call): ${currentIsLiked}`);
 
             let res;
-            if (reviewToToggle.isLiked) { // 이미 좋아요를 눌렀다면, 좋아요 해제 (DELETE)
-                console.log(`[BookReview.jsx] 좋아요 해제 시도: reviewId=${reviewId}`);
-                res = await fetch(`http://localhost:8080/bookReview/review/${reviewId}/like`, { // DELETE 요청
+            if (currentIsLiked) { // UI 업데이트 직전의 isLiked 상태가 true였다면 (좋아요 해제)
+                console.log(`[BookReview.jsx] 좋아요 해제 시도 (DELETE): reviewId=${reviewId}`);
+                res = await fetch(`http://localhost:8080/bookReview/${reviewId}/like`, { 
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-            } else { // 좋아요를 누르지 않았다면, 좋아요 등록 (POST)
-                console.log(`[BookReview.jsx] 좋아요 등록 시도: reviewId=${reviewId}`);
-                res = await fetch(`http://localhost:8080/bookReview/reviews/${reviewId}/like`, { // POST 요청
+            } else { // UI 업데이트 직전의 isLiked 상태가 false였다면 (좋아요 등록)
+                console.log(`[BookReview.jsx] 좋아요 등록 시도 (POST): reviewId=${reviewId}`);
+                res = await fetch(`http://localhost:8080/bookReview/${reviewId}/like`, { 
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -182,15 +198,20 @@ function BookReview({ bookIsbn, isLoggedIn, getAuthToken, onReviewsLoaded }) {
 
             if (!res.ok) {
                 const errorText = await res.text();
+                // 서버에서 오류가 발생하면 UI 상태를 원래대로 되돌림 (여기서는 다시 fetchReviews로 동기화)
+                // setReviews(originalReviews); // <-- 이 부분은 fetchReviews가 처리하게 합니다.
                 throw new Error(`좋아요 처리 실패: ${res.status} ${errorText}`);
             }
 
-            alert(reviewToToggle.isLiked ? "좋아요가 해제되었습니다." : "좋아요 처리되었습니다.");
-            fetchReviews(); // 좋아요 상태 및 카운트 업데이트를 위해 리뷰 목록 새로고침
+            // API 호출 성공 후, 서버로부터 최신 상태를 가져와 최종 동기화
+            // 이 호출이 성공적으로 완료되면 UI는 서버의 확정된 상태와 일치하게 됩니다.
+            fetchReviews(); 
 
         } catch (err) {
             alert(`좋아요 처리 중 오류 발생: ${err.message}`);
             console.error("[BookReview.jsx] 좋아요 처리 오류:", err);
+            // 오류 발생 시, fetchReviews를 다시 호출하여 UI를 서버의 원래 상태로 되돌립니다.
+            fetchReviews(); 
         }
     };
 
@@ -256,7 +277,7 @@ function BookReview({ bookIsbn, isLoggedIn, getAuthToken, onReviewsLoaded }) {
                 fetchReviews(); // 삭제 후 리뷰 목록 새로고침
 
             } catch (err) {
-                    alert(`리뷰 삭제 중 오류 발생: ${err.message}`);
+                alert(`리뷰 삭제 중 오류 발생: ${err.message}`);
                 console.error("[BookReview.jsx] 리뷰 삭제 중 오류 발생:", err);
             }
         }
