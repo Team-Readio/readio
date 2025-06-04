@@ -86,3 +86,17 @@
 .findLinks a:hover {
     text-decoration: underline;
 }
+
+/* Login.module.css */
+/* .kakaoBtn {
+    margin-top: 10px;
+    width: 183px;
+    height: 45px;
+    background-image: url('https://developers.kakao.com/tool/resource/static/img/button/login/full/ko/kakao_login_medium_narrow.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: none; */
+    /* cursor: pointer;
+    display: block;      인라인 요소가 아닌 블록 요소로 만들어야 정렬 가능
+    margin-left: 0;      왼쪽 정렬
+*/

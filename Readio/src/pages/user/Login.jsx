@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import loginImage from '../../assets/login.png';
@@ -6,6 +6,72 @@ import { loginSuccess } from '../../modules/user/userSlice';
 import LoginCSS from './Login.module.css';
 
 const Login = () => {
+
+    useEffect(() => {
+        if (window.Kakao && !window.Kakao.isInitialized()) {
+            window.Kakao.init('f0f08986cddfa65010a8f738624ce0fc'); // 🔑 여기에 본인의 키 입력
+            console.log('Kakao SDK initialized');
+        }
+    }, []);
+
+    // 카카오 로그인 함수
+    const handleKakaoLogin = () => {
+        if (!window.Kakao) return;
+
+        window.Kakao.Auth.login({
+            scope: 'profile_nickname', // 원하는 동의항목 추가
+            success: function (authObj) {
+                console.log('카카오 로그인 성공!', authObj);
+
+                // 액세스 토큰을 백엔드로 전달
+                fetch("http://localhost:8080/users/kakao", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        accessToken: authObj.access_token
+                    }),
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("백엔드 로그인 응답:", data);
+
+                        // 이후 로컬 상태 저장, 리다이렉트 처리 등 동일하게
+                        sessionStorage.setItem("accessToken", data.accessToken);
+                        sessionStorage.setItem("userInfo", JSON.stringify({
+                            userId: data.userId,
+                            userName: data.userName,
+                            userRole: data.userRole,
+                        }));
+
+                        dispatch(loginSuccess({
+                            userId: data.userId,
+                            userName: data.userName,
+                            userRole: data.userRole,
+                            isLoggedIn: true,
+                            accessToken: data.accessToken,
+                        }));
+
+                        if (data.userRole === "ADMIN") {
+                            navigate("/admin");
+                        } else {
+                            navigate("/");
+                        }
+                    })
+                    .catch(err => {
+                        console.error("카카오 로그인 처리 중 오류:", err);
+                        alert("카카오 로그인 실패");
+                    });
+            },
+            fail: function (err) {
+                console.error('카카오 로그인 실패', err);
+                alert("카카오 로그인 실패");
+            }
+        });
+    };
+
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
@@ -32,13 +98,13 @@ const Login = () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(formData),
-                credentials: "include" // 쿠키를 포함하여 요청
+                // credentials: "include" // 쿠키를 포함하여 요청
             });
 
             if (!response.ok) {
                 let errorMessage = "로그인 실패";
                 let errorData = null;
-                
+
                 try {
                     errorData = await response.json();
                     if (errorData && errorData.message) {
@@ -63,10 +129,12 @@ const Login = () => {
 
             const userInfoResponse = await fetch("http://localhost:8080/users/me", {
                 headers: {
-                    "Authorization": `Bearer ${data.accessToken}`   //토큰
+                    "Authorization": `Bearer ${data.accessToken}`,   //토큰
+                    "Content-Type": "application/json"
                 },
                 credentials: "include"
             });
+            console.log("user/me 토큰:", data.accessToken)
 
             if (!userInfoResponse.ok) {
                 throw new Error("사용자 정보 조회 실패");
@@ -150,11 +218,39 @@ const Login = () => {
                     </div>
 
                     <button type="submit" className={LoginCSS.submitBtn}>로그인</button>
+
+
                     <div className={LoginCSS.findLinks}>
                         <Link to="/account">아이디 찾기</Link>
                         <span className={LoginCSS.divider}>|</span>
                         <Link to="/account/findPwd">비밀번호 찾기</Link>
                     </div>
+
+                    {/* <button
+                        type="button"
+                        onClick={handleKakaoLogin}
+                        className={LoginCSS.kakaoBtn}
+                    /> */}
+                    
+                    <form style={{ textAlign: 'left' }}>
+                        <button
+                            type="button"
+                            onClick={handleKakaoLogin}
+                            style={{
+                                border: 'none',
+                                background: 'none',
+                                padding: 0,
+                                cursor: 'pointer'
+                            }}
+                        >
+                            <img
+                                src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+                                alt="카카오 로그인"
+                                style={{ width: '30px', height: '30px' }}
+                            />
+                        </button>
+                    </form>
+
                 </form>
             </div>
         </div>
