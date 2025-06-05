@@ -3,7 +3,6 @@ import {
     POST_POST,
     PUT_POST,
     DELETE_POST,
-    SET_POSTS_COUNT // 새로 추가된 액션 임포트
 } from '../modules/postwriting/PostModule.js'; // PostModule.js 경로 확인
 
 const getAuthHeader = () => {
