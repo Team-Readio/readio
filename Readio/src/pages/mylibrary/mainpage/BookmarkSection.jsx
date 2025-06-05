@@ -90,7 +90,7 @@ const BookmarkSection = () => {
         <>
             <div className={styles.section}>
                 <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>영상 ({bookmarkedVideos.length})</h2>
+                    <h2 className={styles.sectionTitle}>영상 </h2>
                     {/* 여기에 targetUserId 추가 */}
                     <span className={styles.sectionAction} onClick={() => navigate(`/bookmark/${targetUserId}`, { state: { activeTab: 'video' } })}>전체보기</span>
                 </div>
@@ -122,7 +122,7 @@ const BookmarkSection = () => {
 
             <div className={styles.section}>
                 <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>도서 ({bookmarkedBooks.length})</h2>
+                    <h2 className={styles.sectionTitle}>도서</h2>
                     {/* 여기에 targetUserId 추가 */}
                     <span className={styles.sectionAction} onClick={() => navigate(`/bookmark/${targetUserId}`, { state: { activeTab: 'book' } })}>전체보기</span>
                 </div>
