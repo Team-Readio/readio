@@ -186,8 +186,8 @@ function AdminQnaList() {
                                         </NavLink>
                                     </td>
                                     <td>{qna.userId}</td>
-                                    <td>{new Date(qna.qnaCreateAt).toLocaleDateString()}</td>
-                                    <td>{qna.qnaViewCount || 0}</td>
+                                   <td>{new Date(qna.qnaCreateAt).toLocaleString()}</td>
+                                    <td>{qna.qnaView || 0}</td>
                                 </tr>
                             ))
                         )}
