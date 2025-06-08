@@ -14,7 +14,6 @@ function RecommandedVideoList({ keyword }) {
   useEffect(() => {
     if (!keyword) return;
 
-    // 원본 제목 로그
     console.log('넘어온 키워드 :', keyword);
 
     const cleaned = keyword
