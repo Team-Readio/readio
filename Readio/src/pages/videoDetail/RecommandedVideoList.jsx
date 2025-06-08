@@ -31,7 +31,7 @@ function RecommandedVideoList({ keyword }) {
           ? dbRes.data.videoDTOList
           : [];
 
-        // 부족분만큼 YouTube API 호출
+        // 부족분만큼 API 호출
         const need = MAX_RECOMMEND - dbList.length;
         let apiList = [];
         if (need > 0) {
