@@ -26,14 +26,6 @@ export async function getTopVideos(dispatch) {
 
 export async function getNewVideos(type, keyword, dispatch, num, foundVideos, filtering) {
     console.log("keyword 잘 오냐:", keyword, "type은뭐냐:", type);
-    // AIzaSyBmgnlyqWd6hYWztLA-_gM4TgIEx2XGd6s (수민)
-    // AIzaSyDhnTEJd1zHHo-o98rsn51pHTYX8mbPI4I (성경님)
-
-    // 추가 API 
-    // AIzaSyA2Cyb_5A9hMOylg1aAqCBSbsaUfYnHMEA (성경님)
-    // AIzaSyBgFSJpcl_vuWe0oHdP-S59-E_zWIbouto (수민)
-    // AIzaSyBGSUwC4IbniXmnHaPJpTRgr4mQ0oWdwbo
-    // AIzaSyACDInlwb5PHS9y-M8hsqv8Pc0WH5hef8Y
 
     let maxResult = 10;
 
@@ -69,9 +61,9 @@ export async function getNewVideos(type, keyword, dispatch, num, foundVideos, fi
         try {
             const encodedKeyword = encodeURIComponent(keyword);
             console.log("최종키워드?", encodedKeyword);
-            const baseUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodedKeyword + '&type=video&maxResults=' + maxResult + '&key=AIzaSyACDInlwb5PHS9y-M8hsqv8Pc0WH5hef8Y';
+            const baseUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodedKeyword + '&type=video&maxResults=' + maxResult + '&key=';
             console.log("최종url?", baseUrl);
-            // const baseUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + keyword + '&type=video&maxResults=' + maxResult + '&key=AIzaSyA2Cyb_5A9hMOylg1aAqCBSbsaUfYnHMEA';
+            // const baseUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + keyword + '&type=video&maxResults=' + maxResult + '&key=';
             const data = await fetch(baseUrl);
             const json = await data.json();
             const result = json.items;
@@ -104,14 +96,6 @@ export async function getNewVideos(type, keyword, dispatch, num, foundVideos, fi
 
 export async function searchNewVideos(keyword, dispatch, num, foundVideos, filtering) {
 
-    // AIzaSyBmgnlyqWd6hYWztLA-_gM4TgIEx2XGd6s (수민)
-    // AIzaSyDhnTEJd1zHHo-o98rsn51pHTYX8mbPI4I (성경님)
-    // AIzaSyBGSUwC4IbniXmnHaPJpTRgr4mQ0oWdwbo (성경)
-
-    // 추가 API 
-    // AIzaSyA2Cyb_5A9hMOylg1aAqCBSbsaUfYnHMEA (성경님)
-    // AIzaSyBgFSJpcl_vuWe0oHdP-S59-E_zWIbouto (수민)
-
     let maxResult = 5;
 
     if (maxResult <= num) return null; else {
@@ -143,7 +127,7 @@ export async function searchNewVideos(keyword, dispatch, num, foundVideos, filte
         try {
             const encodedKeyword = encodeURIComponent(keyword);
             console.log("최종키워드?", encodedKeyword);
-            const baseUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodedKeyword + '&type=video&maxResults=' + maxResult + '&key=AIzaSyA8b2XYD6ujd4sTES4Ry4_w7Ww-ioxyBds';
+            const baseUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodedKeyword + '&type=video&maxResults=' + maxResult + '&key=';
             const data = await fetch(baseUrl);
             const json = await data.json();
 
